@@ -1,0 +1,27 @@
+<mat-drawer-container class="container">
+
+    <mat-drawer #drawer  mode="side" opened>
+        <mat-toolbar>
+            <span>Menu</span>
+        </mat-toolbar>
+        <mat-nav-list>
+            <span>E-comerce</span>
+            <span></span>
+            <mat-list-item routerLink="ecommerce">Cards de Armas</mat-list-item>
+
+            
+            <span>Administrativo</span>
+            <span></span>
+            <mat-list-item routerLink="/admin/armas">Controle de Armas</mat-list-item>
+            <mat-list-item routerLink="/admin/acabamentos">Controle de Acabamentos</mat-list-item>
+            <mat-list-item routerLink="/admin/funcionarios">Controle de Funcionarios</mat-list-item>
+            <mat-list-item routerLink="/admin/clientes">Controle de Clientes</mat-list-item>
+            <mat-list-item routerLink="/admin/usuarios">Controle de Usuarios</mat-list-item>
+            <mat-list-item routerLink="/admin/enderecos">Controle de Endereços</mat-list-item>
+        </mat-nav-list>
+    </mat-drawer>
+
+    <mat-drawer-content>
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+</mat-drawer-container>

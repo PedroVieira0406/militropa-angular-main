@@ -1,0 +1,208 @@
+<mat-toolbar color="primary" class="toolbar-title">Cadastro de Armas</mat-toolbar>
+<div class="form-container">
+    <mat-card>
+        <mat-card-content>
+            <form [formGroup]="formGroup">
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Nome</mat-label>
+                    <input matInput type="text" formControlName="nome">
+                    <mat-error *ngIf="formGroup.get('nome')?.invalid && formGroup.get('nome')?.touched">
+                    <!-- erros do front-end -->
+                    {{getErrorMessage('nome', formGroup.get('nome')?.errors)}}
+
+                    <!-- erros do back-end -->
+                    @if(formGroup.get('nome')?.hasError('apiError')) {
+                        <span>{{formGroup.get('nome')?.getError('apiError')}}</span> 
+                    }
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Descrição</mat-label>
+                    <input matInput type="text" formControlName="descricao">
+                    <mat-error *ngIf="formGroup.get('descricao')?.invalid && formGroup.get('descricao')?.touched">
+                    <!-- erros do front-end -->
+                    {{getErrorMessage('descricao', formGroup.get('descricao')?.errors)}}
+
+                    <!-- erros do back-end -->
+                    @if(formGroup.get('descricao')?.hasError('apiError')) {
+                        <span>{{formGroup.get('descricao')?.getError('apiError')}}</span> 
+                    }
+                </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Preço</mat-label>
+                    <input matInput type="number" formControlName="preco">
+                    <mat-error *ngIf="formGroup.get('preco')?.invalid && formGroup.get('preco')?.touched">
+                    <!-- erros do front-end -->
+                    {{getErrorMessage('preco', formGroup.get('preco')?.errors)}}
+
+                    <!-- erros do back-end -->
+                    @if(formGroup.get('preco')?.hasError('apiError')) {
+                        <span>{{formGroup.get('preco')?.getError('apiError')}}</span> 
+                    }
+                </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Quantidade em estoque</mat-label>
+                    <input matInput type="number" formControlName="qtdNoEstoque">
+                    <mat-error *ngIf="formGroup.get('qtdNoEstoque')?.invalid && formGroup.get('qtdNoEstoque')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('qtdNoEstoque', formGroup.get('qtdNoEstoque')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('qtdNoEstoque')?.hasError('apiError')) {
+                            <span>{{formGroup.get('qtdNoEstoque')?.getError('apiError')}}</span> 
+                        }</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Tipo de Arma</mat-label>
+                    <input matInput type="number" formControlName="tipo">
+                    <mat-error *ngIf="formGroup.get('tipo')?.invalid && formGroup.get('tipo')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('tipo', formGroup.get('tipo')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('tipo')?.hasError('apiError')) {
+                            <span>{{formGroup.get('tipo')?.getError('apiError')}}</span> 
+                        }</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Marca</mat-label>
+                    <input matInput type="text" formControlName="marca">
+                    <mat-error *ngIf="formGroup.get('marca')?.invalid && formGroup.get('marca')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('marca', formGroup.get('marca')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('marca')?.hasError('apiError')) {
+                            <span>{{formGroup.get('marca')?.getError('apiError')}}</span> 
+                        }</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Acabamento</mat-label>
+                    <input matInput type="text" formControlName="acabamento">
+                    <mat-error *ngIf="formGroup.get('acabamento')?.invalid && formGroup.get('acabamento')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('acabamento', formGroup.get('acabamento')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('acabamento')?.hasError('apiError')) {
+                            <span>{{formGroup.get('acabamento')?.getError('apiError')}}</span> 
+                        }</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Calibre</mat-label>
+                    <input matInput type="text" formControlName="calibre">
+                    <mat-error *ngIf="formGroup.get('calibre')?.invalid && formGroup.get('calibre')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('calibre', formGroup.get('calibre')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('calibre')?.hasError('apiError')) {
+                            <span>{{formGroup.get('calibre')?.getError('apiError')}}</span> 
+                        }</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Comprimento do Cano</mat-label>
+                    <input matInput type="text" formControlName="comprimentoDoCano">
+                    <mat-error *ngIf="formGroup.get('comprimentoDoCano')?.invalid && formGroup.get('comprimentoDoCano')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('comprimentoDoCano', formGroup.get('comprimentoDoCano')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('comprimentoDoCano')?.hasError('apiError')) {
+                            <span>{{formGroup.get('comprimentoDoCano')?.getError('apiError')}}</span> 
+                        }</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Capacidade de Tiros</mat-label>
+                    <input matInput type="number" formControlName="capacidadeDeTiro">
+                    <mat-error *ngIf="formGroup.get('capacidadeDeTiro')?.invalid && formGroup.get('capacidadeDeTiro')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('capacidadeDeTiro', formGroup.get('capacidadeDeTiro')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('capacidadeDeTiro')?.hasError('apiError')) {
+                            <span>{{formGroup.get('capacidadeDeTiro')?.getError('apiError')}}</span> 
+                        }</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Numero Sigma</mat-label>
+                    <input matInput type="text" formControlName="numeroSigma">
+                    <mat-error *ngIf="formGroup.get('numeroSigma')?.invalid && formGroup.get('numeroSigma')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('numeroSigma', formGroup.get('numeroSigma')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('numeroSigma')?.hasError('apiError')) {
+                            <span>{{formGroup.get('numeroSigma')?.getError('apiError')}}</span> 
+                        }</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Numero da arma</mat-label>
+                    <input matInput type="text" formControlName="numeroDaArma">
+                    <mat-error *ngIf="formGroup.get('numeroDaArma')?.invalid && formGroup.get('numeroDaArma')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('numeroDaArma', formGroup.get('numeroDaArma')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('numeroDaArma')?.hasError('apiError')) {
+                            <span>{{formGroup.get('numeroDaArma')?.getError('apiError')}}</span> 
+                        }</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Modelo</mat-label>
+                    <input matInput type="text" formControlName="modelo">
+                    <mat-error *ngIf="formGroup.get('modelo')?.invalid && formGroup.get('modelo')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('modelo', formGroup.get('modelo')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('modelo')?.hasError('apiError')) {
+                            <span>{{formGroup.get('modelo')?.getError('apiError')}}</span> 
+                        }</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>RNA</mat-label>
+                    <input matInput type="text" formControlName="rna">
+                    <mat-error *ngIf="formGroup.get('rna')?.invalid && formGroup.get('rna')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('rna', formGroup.get('rna')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('rna')?.hasError('apiError')) {
+                            <span>{{formGroup.get('rna')?.getError('apiError')}}</span> 
+                        }</mat-error>
+                </mat-form-field>
+
+            </form>
+        </mat-card-content>
+        <mat-card-actions class="actions">
+            <button mat-raised-button routerLink="../">
+                Cancelar
+            </button>
+
+            <button mat-raised-button *ngIf="formGroup?.get('id')?.value" color="warn" (click)="excluir()"
+                [disabled]="formGroup.invalid">
+                Excluir
+            </button>
+
+            <button mat-raised-button color="primary" (click)="salvar()" >
+                Salvar
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>

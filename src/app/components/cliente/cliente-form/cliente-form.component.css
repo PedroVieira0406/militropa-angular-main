@@ -1,0 +1,36 @@
+.toolbar-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+mat-card {
+  max-width: 600px;
+  width: 100%;
+}
+
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.full-width-input {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+button[mat-raised-button] {
+  min-width: 120px;
+}

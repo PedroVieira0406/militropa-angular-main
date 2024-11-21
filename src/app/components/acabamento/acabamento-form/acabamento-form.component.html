@@ -1,0 +1,39 @@
+<mat-toolbar color="primary" class="toolbar-title">Cadastro de Acabamento da Arma</mat-toolbar>
+<div class="form-container">
+    <mat-card>
+        <mat-card-content>
+            <form [formGroup]="formGroup">
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Material</mat-label>
+                    <input matInput type="text" formControlName="material">
+                    <mat-error *ngIf="formGroup.get('material')
+                                    && formGroup.get('material')?.invalid
+                                    && formGroup.get('material')?.touched">
+                        O Material é obrigatorio.
+                    </mat-error>
+                </mat-form-field>
+
+            </form>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button
+                    color="primary"
+                    (click)="salvar()"
+                    [disabled]="formGroup.invalid">
+                Salvar
+            </button>
+            <button mat-raised-button
+                    *ngIf="formGroup?.get('id')?.value"
+                    color="warn"
+                    (click)="excluir()"
+                    [disabled]="formGroup.invalid">
+                Excluir
+            </button>
+            <button mat-raised-button
+                    routerLink="/acabamentos">
+                Cancelar
+            </button>
+
+        </mat-card-actions>
+    </mat-card>
+</div>

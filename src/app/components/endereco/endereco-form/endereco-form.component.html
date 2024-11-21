@@ -1,0 +1,106 @@
+<mat-toolbar color="primary" class="toolbar-title">Cadastro de Endereco</mat-toolbar>
+<div class="form-container">
+    <mat-card>
+        <mat-card-content>
+            <form [formGroup]="formGroup">
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Nome</mat-label>
+                    <input matInput type="text" formControlName="nome">
+                    <mat-error *ngIf="formGroup.get('nome')
+                                    && formGroup.get('nome')?.invalid
+                                    && formGroup.get('nome')?.touched">
+                        O nome é obrigatorio.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Logradouro</mat-label>
+                    <input matInput type="text" formControlName="logradouro">
+                    <mat-error *ngIf="formGroup.get('logradouro')
+                                    && formGroup.get('logradouro')?.invalid
+                                    && formGroup.get('logradouro')?.touched">
+                        O logradouro é obrigatorio.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Numero</mat-label>
+                    <input matInput type="text" formControlName="numero">
+                    <mat-error *ngIf="formGroup.get('numero')
+                                    && formGroup.get('numero')?.invalid
+                                    && formGroup.get('numero')?.touched">
+                        O numero é obrigatorio.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Bairro</mat-label>
+                    <input matInput type="text" formControlName="bairro">
+                    <mat-error *ngIf="formGroup.get('bairro')
+                                    && formGroup.get('bairro')?.invalid
+                                    && formGroup.get('bairro')?.touched">
+                        O bairro é obrigatorio.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>CEP</mat-label>
+                    <input matInput type="text" formControlName="cep">
+                    <mat-error *ngIf="formGroup.get('cep')
+                                    && formGroup.get('cep')?.invalid
+                                    && formGroup.get('cep')?.touched">
+                        O cep é obrigatorio.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Cidade</mat-label>
+                    <input matInput type="text" formControlName="cidade">
+                    <mat-error *ngIf="formGroup.get('cidade')
+                                    && formGroup.get('cidade')?.invalid
+                                    && formGroup.get('cidade')?.touched">
+                        O cidade é obrigatorio.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Estado</mat-label>
+                    <input matInput type="text" formControlName="estado">
+                    <mat-error *ngIf="formGroup.get('estado')
+                                    && formGroup.get('estado')?.invalid
+                                    && formGroup.get('estado')?.touched">
+                        O estado é obrigatorio.
+                    </mat-error>
+                </mat-form-field>
+            
+<!--                <mat-form-field appearance="fill">
+                    <mat-label>Estado</mat-label>
+                    <mat-select formControlName="estado">
+                        @for (estado of estados; track estado.id) {
+                            <mat-option [value]="estado">
+                                {{estado.nome}}
+                            </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+-->
+
+            </form>
+        </mat-card-content>
+    <mat-card-actions class="actions">
+        <button mat-raised-button routerLink="../">
+            Cancelar
+        </button>
+
+        <button mat-raised-button *ngIf="formGroup?.get('id')?.value" color="warn" (click)="excluir()"
+            [disabled]="formGroup.invalid">
+            Excluir
+        </button>
+
+        <button mat-raised-button color="primary" (click)="salvar()" >
+            Salvar
+        </button>
+    </mat-card-actions>
+    </mat-card>
+</div>

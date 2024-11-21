@@ -1,0 +1,118 @@
+<mat-toolbar color="primary" class="toolbar-title">Cadastro de Funcionario</mat-toolbar>
+<div class="form-container">
+    <mat-card>
+        <mat-card-content>
+            <form [formGroup]="formGroup">
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Nome</mat-label>
+                    <input matInput type="text" formControlName="nome">
+                    <mat-error *ngIf="formGroup.get('nome')?.invalid && formGroup.get('nome')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('nome', formGroup.get('nome')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('nome')?.hasError('apiError')) {
+                            <span>{{formGroup.get('nome')?.getError('apiError')}}</span>
+                        }
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Cpf</mat-label>
+                    <input matInput type="text" formControlName="cpf">
+                    <mat-error *ngIf="formGroup.get('cpf')?.invalid && formGroup.get('cpf')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('cpf', formGroup.get('cpf')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('cpf')?.hasError('apiError')) {
+                            <span>{{formGroup.get('cpf')?.getError('apiError')}}</span>
+                        }
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" formControlName="email">
+                    <mat-error *ngIf="formGroup.get('email')?.invalid && formGroup.get('email')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('email', formGroup.get('email')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('email')?.hasError('apiError')) {
+                            <span>{{formGroup.get('email')?.getError('apiError')}}</span>
+                        }
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Telefone</mat-label>
+                    <input matInput type="text" formControlName="telefone">
+                    <mat-error *ngIf="formGroup.get('telefone')?.invalid && formGroup.get('telefone')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('telefone', formGroup.get('telefone')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('telefone')?.hasError('apiError')) {
+                            <span>{{formGroup.get('telefone')?.getError('apiError')}}</span>
+                        }
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Endereço</mat-label>
+                    <mat-select formControlName="endereco">
+                        @for (endereco of enderecos; track endereco.id) {
+                        <mat-option [value]="endereco">
+                            {{endereco.nome}}
+                        </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Matricula</mat-label>
+                    <input matInput type="text" formControlName="matricula">
+                    <mat-error *ngIf="formGroup.get('matricula')?.invalid && formGroup.get('matricula')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('matricula', formGroup.get('matricula')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('senmatriculaa')?.hasError('apiError')) {
+                            <span>{{formGroup.get('matricula')?.getError('apiError')}}</span>
+                        }
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Usuario</mat-label>
+                    <mat-select formControlName="usuario">
+                        @for (usuario of usuarios; track usuario.id) {
+                        <mat-option [value]="usuario">
+                            {{usuario.login}}
+                        </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+
+            </form>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button routerLink="../">
+                Cancelar
+            </button>
+
+            <button mat-raised-button *ngIf="formGroup?.get('id')?.value" color="warn" (click)="excluir()"
+                [disabled]="formGroup.invalid">
+                Excluir
+            </button>
+
+            <button mat-raised-button color="primary" (click)="salvar()" >
+                Salvar
+            </button>
+
+        </mat-card-actions>
+    </mat-card>
+</div>
