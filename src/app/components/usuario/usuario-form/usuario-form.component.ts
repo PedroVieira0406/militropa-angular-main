@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -23,13 +23,20 @@ import { UsuarioService } from '../../../services/usuario.service';
   standalone: true,
   imports: [ ReactiveFormsModule, MatCardModule, MatFormFieldModule,
     MatButtonModule, NgIf, MatInputModule, RouterModule, MatTableModule, MatToolbarModule, MatSelectModule, MatDatepickerModule,
-    MatNativeDateModule, MatIconModule, MatMenuModule],
+    MatNativeDateModule, MatIconModule, MatMenuModule, ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './usuario-form.component.html',
   styleUrl: './usuario-form.component.css'
 })
 
 export class UsuarioFormComponent {
   formGroup: FormGroup;
+
+  hide = signal(true);
+  clickEvent(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
+  }
 
 
   constructor(private formBuilder: FormBuilder,

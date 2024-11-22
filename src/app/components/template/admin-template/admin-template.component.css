@@ -1,0 +1,4 @@
+main {
+    flex: 1; /* Faz o conteúdo principal ocupar o espaço restante */
+    padding: 20px;
+  }

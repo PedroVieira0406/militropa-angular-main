@@ -6,7 +6,7 @@ export class Cliente {
     nome!: string;
     cpf!: string;
     email!: string;
-    numeroRegistro_posse_porte!: string;
+    registro!: string;
     usuario!: Usuario;
     telefones?: string[]; // Telefones como array de strings
     enderecos?: Endereco[]; // Endereços como array de objetos do tipo Endereco

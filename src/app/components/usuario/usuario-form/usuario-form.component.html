@@ -14,23 +14,27 @@
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('login')?.hasError('apiError')) {
-                            <span>{{formGroup.get('login')?.getError('apiError')}}</span> 
+                        <span>{{formGroup.get('login')?.getError('apiError')}}</span>
                         }
                     </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>Senha</mat-label>
-                    <input matInput type="password" formControlName="senha">
+                    <input matInput [type]="hide() ? 'password' : 'text'" formControlName="senha" />
                     <mat-error *ngIf="formGroup.get('senha')?.invalid && formGroup.get('senha')?.touched">
                         <!-- erros do front-end -->
                         {{getErrorMessage('senha', formGroup.get('senha')?.errors)}}
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('senha')?.hasError('apiError')) {
-                            <span>{{formGroup.get('senha')?.getError('apiError')}}</span>
+                        <span>{{formGroup.get('senha')?.getError('apiError')}}</span>
                         }
                     </mat-error>
+                    <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hide()">
+                        <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="full-width-input">
@@ -41,11 +45,11 @@
                     </mat-select>
                     <mat-error *ngIf="formGroup.get('perfil')?.invalid && formGroup.get('perfil')?.touched">
                         {{ getErrorMessage('perfil', formGroup.get('perfil')?.errors) }}
-                      <span *ngIf="formGroup.get('perfil')?.hasError('apiError')">
-                        {{ formGroup.get('perfil')?.getError('apiError') }}
+                        <span *ngIf="formGroup.get('perfil')?.hasError('apiError')">
+                            {{ formGroup.get('perfil')?.getError('apiError') }}
                         </span>
                     </mat-error>
-                    </mat-form-field>
+                </mat-form-field>
 
             </form>
         </mat-card-content>
@@ -60,7 +64,7 @@
                 Excluir
             </button>
 
-            <button mat-raised-button color="primary" (click)="salvar()" >
+            <button mat-raised-button color="primary" (click)="salvar()">
                 Salvar
             </button>
         </mat-card-actions>

@@ -42,7 +42,7 @@ export class ClienteFormComponent {
         nome:['', Validators.required],
         cpf: ['', Validators.required],
         email: ['', Validators.required],
-        numeroRegistro_posse_porte: ['', Validators.required],
+        registro: ['', Validators.required],
         telefones: this.formBuilder.array([]), // FormArray para telefones
         enderecos: this.formBuilder.array([]), // FormArray para endereços
         login: ['', Validators.required],
@@ -69,7 +69,7 @@ export class ClienteFormComponent {
           nome: cliente?.nome || '',
           cpf: cliente?.cpf || '',
           email: cliente?.email || '',
-          numeroRegistro_posse_porte: cliente?.numeroRegistro_posse_porte || '',
+          registro: cliente?.registro || '',
           login: cliente?.usuario?.login || '',
         });
         
@@ -210,7 +210,7 @@ errorMessages: { [controlName: string]: { [errorName: string]: string } } = {
     pattern: 'O telefone deve estar em um formato válido.',
     apiError: '',
   },
-  numeroRegistro_posse_porte: {
+  registro: {
     required: 'O número de registro é obrigatório.',
     apiError: '',
   },
