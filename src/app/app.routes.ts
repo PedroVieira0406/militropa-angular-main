@@ -66,7 +66,7 @@ export const routes: Routes = [
 
         {path: 'clientes',component: ClienteListComponent, title: 'Lista de Clientes'},
         {path: 'clientes/new',component: ClienteFormComponent, title: 'Novo Cliente'},
-        {path: 'cliente/edit/:id',component: ClienteFormComponent, resolve: {cliente: clienteResolver}},
+        {path: 'clientes/edit/:id',component: ClienteFormComponent, resolve: {cliente: clienteResolver}},
 
         {path: 'acabamentos',component: AcabamentoListComponent, title: 'Lista de Acabamentos'},
         {path: 'acabamentos/new',component: AcabamentoFormComponent, title: 'Novo acabamento'},
