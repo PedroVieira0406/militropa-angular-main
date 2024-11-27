@@ -1,10 +1,11 @@
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -17,7 +18,8 @@ import { ArmaService } from '../../../services/arma.service';
   standalone: true,
   imports: [NgIf, ReactiveFormsModule, MatFormFieldModule,
     MatInputModule, MatButtonModule, MatCardModule, MatToolbarModule,
-    RouterModule, MatSelectModule,],
+    RouterModule, MatSelectModule, MatIcon, NgIf, NgFor,
+    MatIconModule],
   templateUrl: './arma-form.component.html',
   styleUrl: './arma-form.component.css'
 })
@@ -25,6 +27,10 @@ export class ArmaFormComponent implements OnInit{
 
   formGroup: FormGroup;
   armas: Arma[] = [];
+
+  fileName: string = '';
+  selectedFile: File | null = null; 
+  imagePreview: string | ArrayBuffer | null = null;
 
   constructor(private formBuilder: FormBuilder,
     private armaService: ArmaService,
@@ -65,6 +71,12 @@ export class ArmaFormComponent implements OnInit{
     //selecionando o estasdo
 //    const estado = this.armas.find(estado => estado.id === (municipio?.estado?.id || null));
 
+    // carregando a imagem do preview
+    if (arma && arma.nomeImagem) {
+      this.imagePreview = this.armaService.getUrlImage(arma.nomeImagem);
+      this.fileName = arma.nomeImagem;
+    }
+
     this.formGroup = this.formBuilder.group({
       id:[(arma && arma.id) ? arma.id : null],
       nome: [(arma && arma.nome) ? arma.nome : '', Validators.required],
@@ -81,6 +93,8 @@ export class ArmaFormComponent implements OnInit{
       numeroDaArma: [(arma && arma.numeroDaArma) ? arma.numeroDaArma : '', Validators.required],
       modelo: [(arma && arma.modelo) ? arma.modelo : '', Validators.required],
       rna: [(arma && arma.rna) ? arma.rna : '', Validators.required],
+
+      
     });
   }
 
@@ -128,6 +142,35 @@ export class ArmaFormComponent implements OnInit{
 
     }
     
+  }
+  carregarImagemSelecionada(event: any) {
+    this.selectedFile = event.target.files[0];
+
+    if (this.selectedFile) {
+      this.fileName = this.selectedFile.name;
+      // carregando image preview
+      const reader = new FileReader();
+      reader.onload = e => this.imagePreview = reader.result;
+      reader.readAsDataURL(this.selectedFile);
+    }
+
+  }
+
+  private uploadImage(armaId: number) {
+    if (this.selectedFile) {
+      this.armaService.uploadImage(armaId, this.selectedFile.name, this.selectedFile)
+      .subscribe({
+        next: () => {
+          this.voltarPagina();
+        },
+        error: err => {
+          console.log('Erro ao fazer o upload da imagem');
+          // tratar o erro
+        }
+      })
+    } else {
+      this.voltarPagina();
+    }
   }
 
   excluir() {

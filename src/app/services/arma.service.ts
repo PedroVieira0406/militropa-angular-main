@@ -12,6 +12,19 @@ export class ArmaService {
 
   constructor(private httpClient: HttpClient) { }
 
+  getUrlImage(nomeImagem: string): string {
+    return `${this.baseUrl}/image/download/${nomeImagem}`; 
+  }
+
+  uploadImage(id: number, nomeImagem: string, imagem: File): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('id', id.toString());
+    formData.append('nomeImagem', imagem.name);
+    formData.append('imagem', imagem, imagem.name);
+    
+    return this.httpClient.patch<Arma>(`${this.baseUrl}/image/upload`, formData);
+  }
+
   findAll(page?: number, pageSize?: number): Observable<Arma[]> {
 
     let params = {};

@@ -1,14 +1,14 @@
 <mat-toolbar color="primary">
-    <button (click)="clickMenu()" mat-icon-button>
-        <mat-icon>menu</mat-icon>
-    </button>
-    
-    <span>Armas</span>
+  <button (click)="clickMenu()" mat-icon-button>
+      <mat-icon>menu</mat-icon>
+  </button>
+  
+  <span>Armas</span>
 
-    <span class="arma-spacer"></span>
+  <span class="arma-spacer"></span>
 
-    <button  mat-icon-button >
-      <mat-icon>exit_to_app</mat-icon>
-    </button>
-    
+  <button  mat-icon-button (click)="deslogar()">
+    <mat-icon>exit_to_app</mat-icon>
+  </button>
+  <span>{{usuarioLogado?.login}}</span>
 </mat-toolbar>
