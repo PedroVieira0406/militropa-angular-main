@@ -34,3 +34,11 @@ mat-card-content {
 button[mat-raised-button] {
   min-width: 120px;
 }
+
+.mat-stepper-horizontal {
+  margin-top: 8px;
+}
+
+.mat-mdc-form-field {
+  margin-top: 16px;
+}

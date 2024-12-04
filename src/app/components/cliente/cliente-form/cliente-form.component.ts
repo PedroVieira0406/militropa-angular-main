@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Cliente } from '../../../models/cliente.model';
@@ -21,7 +22,7 @@ import { ClienteService } from '../../../services/cliente.service';
   standalone: true,
   imports: [NgFor, NgIf, ReactiveFormsModule, MatFormFieldModule,
     MatInputModule, MatButtonModule, MatCardModule, MatToolbarModule,
-    RouterModule, MatSelectModule, MatIcon],
+    RouterModule, MatSelectModule, MatIcon, MatStepperModule],
   templateUrl: './cliente-form.component.html',
   styleUrl: './cliente-form.component.css'
 })
@@ -36,26 +37,29 @@ export class ClienteFormComponent {
     private clienteService: ClienteService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,) {
       this.formGroup = this.formBuilder.group({
-        id:[null],
-        nome:['', Validators.required],
-        cpf: ['', Validators.required],
-        email: ['', Validators.required],
-        registro: ['', Validators.required],
-        telefones: this.formBuilder.array([]), // FormArray para telefones
-        enderecos: this.formBuilder.array([]), // FormArray para endereços
-        login: ['', Validators.required],
-        senha: ['', Validators.required],
-      })
-  }
-
+        firstFormGroup: this.formBuilder.group({
+          id: [null],
+          nome: ['', Validators.required],
+          cpf: ['', Validators.required],
+          email: ['', Validators.required],
+          registro: ['', Validators.required],
+          telefones: this.formBuilder.array([]),
+          login: ['', Validators.required],
+          senha: ['', Validators.required],
+        }),
+        secondFormGroup: this.formBuilder.group({
+          enderecos: this.formBuilder.array([]),
+        }),
+      });
+    }
   get telefones(): FormArray {
-    return this.formGroup.get('telefones') as FormArray;
+    return this.formGroup.get('firstFormGroup.telefones') as FormArray;
   }
 
   get enderecosArray(): FormArray {
-    return this.formGroup.get('enderecos') as FormArray;
+    return this.formGroup.get('secondFormGroup.enderecos') as FormArray;
   }
 
       initializeForm(): void {

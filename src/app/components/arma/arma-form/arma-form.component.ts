@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+import { Location, NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
@@ -16,9 +16,9 @@ import { ArmaService } from '../../../services/arma.service';
 @Component({
   selector: 'app-arma-form',
   standalone: true,
-  imports: [NgIf, ReactiveFormsModule, MatFormFieldModule,
+  imports: [ReactiveFormsModule, MatFormFieldModule,
     MatInputModule, MatButtonModule, MatCardModule, MatToolbarModule,
-    RouterModule, MatSelectModule, MatIcon, NgIf, NgFor,
+    RouterModule, MatSelectModule, MatIcon, NgIf,
     MatIconModule],
   templateUrl: './arma-form.component.html',
   styleUrl: './arma-form.component.css'
@@ -35,7 +35,8 @@ export class ArmaFormComponent implements OnInit{
   constructor(private formBuilder: FormBuilder,
     private armaService: ArmaService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute,
+    private location: Location) {
 
     //inicializando
     this.formGroup = this.formBuilder.group({
@@ -171,6 +172,10 @@ export class ArmaFormComponent implements OnInit{
     } else {
       this.voltarPagina();
     }
+  }
+
+  voltarPagina() {
+    this.location.back();
   }
 
   excluir() {
