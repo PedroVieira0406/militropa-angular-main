@@ -1,19 +1,21 @@
-<mat-toolbar color="primary" class="toolbar-title">Cadastro de Armas</mat-toolbar>
+<mat-toolbar>
+    <div class="toolbar-title"> Cadastro de arma</div>
+</mat-toolbar>
 <div class="form-container">
     <mat-card>
         <mat-card-content>
             <form [formGroup]="formGroup">
                 <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>Nome</mat-label>
-                    <input matInput type="text" formControlName="nome">
+                    <input matInput type="text" formControlName="nome" #inputNome>
                     <mat-error *ngIf="formGroup.get('nome')?.invalid && formGroup.get('nome')?.touched">
-                    <!-- erros do front-end -->
-                    {{getErrorMessage('nome', formGroup.get('nome')?.errors)}}
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('nome', formGroup.get('nome')?.errors)}}
 
-                    <!-- erros do back-end -->
-                    @if(formGroup.get('nome')?.hasError('apiError')) {
-                        <span>{{formGroup.get('nome')?.getError('apiError')}}</span> 
-                    }
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('nome')?.hasError('apiError')) {
+                        <span>{{formGroup.get('nome')?.getError('apiError')}}</span>
+                        }
                     </mat-error>
                 </mat-form-field>
 
@@ -21,28 +23,28 @@
                     <mat-label>Descrição</mat-label>
                     <input matInput type="text" formControlName="descricao">
                     <mat-error *ngIf="formGroup.get('descricao')?.invalid && formGroup.get('descricao')?.touched">
-                    <!-- erros do front-end -->
-                    {{getErrorMessage('descricao', formGroup.get('descricao')?.errors)}}
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('descricao', formGroup.get('descricao')?.errors)}}
 
-                    <!-- erros do back-end -->
-                    @if(formGroup.get('descricao')?.hasError('apiError')) {
-                        <span>{{formGroup.get('descricao')?.getError('apiError')}}</span> 
-                    }
-                </mat-error>
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('descricao')?.hasError('apiError')) {
+                        <span>{{formGroup.get('descricao')?.getError('apiError')}}</span>
+                        }
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>Preço</mat-label>
-                    <input matInput type="number" formControlName="preco">
+                    <input matInput type="number" formControlName="preco" #inputPreco>
                     <mat-error *ngIf="formGroup.get('preco')?.invalid && formGroup.get('preco')?.touched">
-                    <!-- erros do front-end -->
-                    {{getErrorMessage('preco', formGroup.get('preco')?.errors)}}
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('preco', formGroup.get('preco')?.errors)}}
 
-                    <!-- erros do back-end -->
-                    @if(formGroup.get('preco')?.hasError('apiError')) {
-                        <span>{{formGroup.get('preco')?.getError('apiError')}}</span> 
-                    }
-                </mat-error>
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('preco')?.hasError('apiError')) {
+                        <span>{{formGroup.get('preco')?.getError('apiError')}}</span>
+                        }
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="full-width-input">
@@ -54,21 +56,17 @@
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('qtdNoEstoque')?.hasError('apiError')) {
-                            <span>{{formGroup.get('qtdNoEstoque')?.getError('apiError')}}</span> 
+                        <span>{{formGroup.get('qtdNoEstoque')?.getError('apiError')}}</span>
                         }</mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="full-width-input">
-                    <mat-label>Tipo de Arma</mat-label>
-                    <input matInput type="number" formControlName="tipo">
-                    <mat-error *ngIf="formGroup.get('tipo')?.invalid && formGroup.get('tipo')?.touched">
-                        <!-- erros do front-end -->
-                        {{getErrorMessage('tipo', formGroup.get('tipo')?.errors)}}
-
-                        <!-- erros do back-end -->
-                        @if(formGroup.get('tipo')?.hasError('apiError')) {
-                            <span>{{formGroup.get('tipo')?.getError('apiError')}}</span> 
-                        }</mat-error>
+                    <mat-label>Tipo de arma</mat-label>
+                    <mat-select formControlName="tipo" #selectTipo>
+                        <mat-option *ngFor="let tipo of tipos" [value]="tipo">
+                            {{ tipo.label }}
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="full-width-input">
@@ -80,20 +78,30 @@
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('marca')?.hasError('apiError')) {
-                            <span>{{formGroup.get('marca')?.getError('apiError')}}</span> 
+                        <span>{{formGroup.get('marca')?.getError('apiError')}}</span>
                         }</mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="full-width-input">
-                    <mat-label>Acabamento</mat-label>
-                    <input matInput type="text" formControlName="acabamento">
+                    <mat-label>Selecione os acabamentos</mat-label>
+                    <mat-select formControlName="acabamento" multiple>
+                        <mat-select-trigger>
+                            {{ formGroup.get('acabamento')?.value?.[0]?.nome || 'Nenhum selecionado' }}
+                            <span *ngIf="(formGroup.get('acabamento')?.value?.length || 0) > 1">
+                                (+{{ (formGroup.get('acabamento')?.value?.length || 0) - 1 }} outros)
+                            </span>
+                        </mat-select-trigger>
+                        <mat-option *ngFor="let acabamento of acabamentoList" [value]="acabamento">
+                            {{ acabamento.nome }}
+                        </mat-option>
+                    </mat-select>
                     <mat-error *ngIf="formGroup.get('acabamento')?.invalid && formGroup.get('acabamento')?.touched">
                         <!-- erros do front-end -->
                         {{getErrorMessage('acabamento', formGroup.get('acabamento')?.errors)}}
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('acabamento')?.hasError('apiError')) {
-                            <span>{{formGroup.get('acabamento')?.getError('apiError')}}</span> 
+                        <span>{{formGroup.get('acabamento')?.getError('apiError')}}</span>
                         }</mat-error>
                 </mat-form-field>
 
@@ -106,33 +114,35 @@
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('calibre')?.hasError('apiError')) {
-                            <span>{{formGroup.get('calibre')?.getError('apiError')}}</span> 
+                        <span>{{formGroup.get('calibre')?.getError('apiError')}}</span>
                         }</mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>Comprimento do Cano</mat-label>
                     <input matInput type="text" formControlName="comprimentoDoCano">
-                    <mat-error *ngIf="formGroup.get('comprimentoDoCano')?.invalid && formGroup.get('comprimentoDoCano')?.touched">
+                    <mat-error
+                        *ngIf="formGroup.get('comprimentoDoCano')?.invalid && formGroup.get('comprimentoDoCano')?.touched">
                         <!-- erros do front-end -->
                         {{getErrorMessage('comprimentoDoCano', formGroup.get('comprimentoDoCano')?.errors)}}
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('comprimentoDoCano')?.hasError('apiError')) {
-                            <span>{{formGroup.get('comprimentoDoCano')?.getError('apiError')}}</span> 
+                        <span>{{formGroup.get('comprimentoDoCano')?.getError('apiError')}}</span>
                         }</mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>Capacidade de Tiros</mat-label>
                     <input matInput type="number" formControlName="capacidadeDeTiro">
-                    <mat-error *ngIf="formGroup.get('capacidadeDeTiro')?.invalid && formGroup.get('capacidadeDeTiro')?.touched">
+                    <mat-error
+                        *ngIf="formGroup.get('capacidadeDeTiro')?.invalid && formGroup.get('capacidadeDeTiro')?.touched">
                         <!-- erros do front-end -->
                         {{getErrorMessage('capacidadeDeTiro', formGroup.get('capacidadeDeTiro')?.errors)}}
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('capacidadeDeTiro')?.hasError('apiError')) {
-                            <span>{{formGroup.get('capacidadeDeTiro')?.getError('apiError')}}</span> 
+                        <span>{{formGroup.get('capacidadeDeTiro')?.getError('apiError')}}</span>
                         }</mat-error>
                 </mat-form-field>
 
@@ -145,7 +155,7 @@
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('numeroSigma')?.hasError('apiError')) {
-                            <span>{{formGroup.get('numeroSigma')?.getError('apiError')}}</span> 
+                        <span>{{formGroup.get('numeroSigma')?.getError('apiError')}}</span>
                         }</mat-error>
                 </mat-form-field>
 
@@ -158,7 +168,7 @@
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('numeroDaArma')?.hasError('apiError')) {
-                            <span>{{formGroup.get('numeroDaArma')?.getError('apiError')}}</span> 
+                        <span>{{formGroup.get('numeroDaArma')?.getError('apiError')}}</span>
                         }</mat-error>
                 </mat-form-field>
 
@@ -171,7 +181,7 @@
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('modelo')?.hasError('apiError')) {
-                            <span>{{formGroup.get('modelo')?.getError('apiError')}}</span> 
+                        <span>{{formGroup.get('modelo')?.getError('apiError')}}</span>
                         }</mat-error>
                 </mat-form-field>
 
@@ -184,7 +194,7 @@
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('rna')?.hasError('apiError')) {
-                            <span>{{formGroup.get('rna')?.getError('apiError')}}</span> 
+                        <span>{{formGroup.get('rna')?.getError('apiError')}}</span>
                         }</mat-error>
                 </mat-form-field>
 
@@ -192,34 +202,33 @@
                     <mat-label>Imagem da Arma</mat-label>
                     <input type="file" (change)="carregarImagemSelecionada($event)" hidden #fileInput>
                     <input matInput [value]="fileName" readonly>
-                    
+
                     <button mat-icon-button matSuffix (click)="fileInput.click()">
                         <mat-icon>folder_open</mat-icon>
-                    </button>   
+                    </button>
                 </mat-form-field>
-                
+
                 <div *ngIf="imagePreview" class="container responsive-grid">
                     <mat-card>
-                
-                        <img mat-card-image [src]="imagePreview" >
+
+                        <img mat-card-image [src]="imagePreview">
 
                         <mat-card-title class="centered-text"> {{inputNome.value}} </mat-card-title>
-                        
+
                         <mat-card-content class="centered-text"> {{selectTipo.value.label}} </mat-card-content>
-                        <br/>
+                        <br />
                         <mat-card-content class="centered-text"> {{inputPreco.value}} </mat-card-content>
-                
+
                         <mat-card-actions class="centered-text">
                             <button mat-button color="primary">Ver mais ...</button>
                         </mat-card-actions>
-                
+
                         <mat-card-footer>
-                            <button mat-flat-button color="accent"
-                                style="width: 100%; padding: 16px;">Adicionar ao carrinho</button>
+                            <button mat-flat-button color="accent" style="width: 100%; padding: 16px;">Adicionar ao
+                                carrinho</button>
                         </mat-card-footer>
                     </mat-card>
                 </div>
-                
 
             </form>
         </mat-card-content>
@@ -233,7 +242,7 @@
                 Excluir
             </button>
 
-            <button mat-raised-button color="primary" (click)="salvar()" >
+            <button mat-raised-button color="primary" (click)="salvar()">
                 Salvar
             </button>
         </mat-card-actions>

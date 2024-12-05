@@ -37,6 +37,7 @@ export class ArmaListComponent implements OnInit{
   pageSize = 5;
   page = 0;
   filtro: string = '';
+  
   constructor(private armaService: ArmaService,
               private router: Router,
               private cdr: ChangeDetectorRef) {}

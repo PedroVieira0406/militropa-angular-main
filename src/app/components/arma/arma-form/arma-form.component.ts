@@ -1,7 +1,7 @@
 import { Location, NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Acabamento } from '../../../models/acabamento.model';
 import { Arma } from '../../../models/arma.model';
 import { ArmaService } from '../../../services/arma.service';
 
@@ -19,7 +20,7 @@ import { ArmaService } from '../../../services/arma.service';
   imports: [ReactiveFormsModule, MatFormFieldModule,
     MatInputModule, MatButtonModule, MatCardModule, MatToolbarModule,
     RouterModule, MatSelectModule, MatIcon, NgIf,
-    MatIconModule],
+    MatIconModule, FormsModule,],
   templateUrl: './arma-form.component.html',
   styleUrl: './arma-form.component.css'
 })
@@ -27,6 +28,7 @@ export class ArmaFormComponent implements OnInit{
 
   formGroup: FormGroup;
   armas: Arma[] = [];
+  acabamentos: Acabamento[] = [];
 
   fileName: string = '';
   selectedFile: File | null = null; 
@@ -48,7 +50,7 @@ export class ArmaFormComponent implements OnInit{
       descricao: ['', Validators.required],
       tipo: [1],
       marca: ['', Validators.required],
-      acabamento: ['', Validators.required],
+      acabamento: [[], Validators.required],  // Uma lista de IDs vazia
       calibre: ['', Validators.required],
       comprimentoDoCano: ['', Validators.required],
       capacidadeDeTiro: ['', Validators.required],
@@ -78,6 +80,9 @@ export class ArmaFormComponent implements OnInit{
       this.fileName = arma.nomeImagem;
     }
 
+  // Obtendo a lista de acabamentos associados à arma (caso existam)
+  const acabamentoIds = arma?.idsAcabamentos?.map(acabamento => acabamento.id) || [];
+
     this.formGroup = this.formBuilder.group({
       id:[(arma && arma.id) ? arma.id : null],
       nome: [(arma && arma.nome) ? arma.nome : '', Validators.required],
@@ -86,7 +91,8 @@ export class ArmaFormComponent implements OnInit{
       descricao: [(arma && arma.descricao) ? arma.descricao : '', Validators.required],
       tipo: [1],
       marca: [(arma && arma.marca) ? arma.marca : '', Validators.required],
-      acabamento: [(arma && arma.acabamento) ? arma.acabamento : '', Validators.required],
+      // Acabamentos como uma lista de IDs
+      acabamento: [arma!.idsAcabamentos || [], Validators.required],
       calibre: [(arma && arma.calibre) ? arma.calibre : '', Validators.required],
       comprimentoDoCano: [(arma && arma.comprimentoDoCano) ? arma.comprimentoDoCano : '', Validators.required],
       capacidadeDeTiro: [(arma && arma.capacidadeDeTiro) ? arma.capacidadeDeTiro : '', Validators.required],

@@ -1,5 +1,4 @@
 import { Acabamento } from "./acabamento.model";
-import { Calibre } from "./calibre.model";
 import { TipoArma } from "./tipo-arma.model";
 
 export class Arma {
@@ -10,7 +9,7 @@ export class Arma {
     descricao!: string;
     tipo!: TipoArma;
     marca!: string;
-    acabamento!: string;
+    idsAcabamentos!: Acabamento[]; //array de id
     calibre!: string;
     comprimentoDoCano!: string;
     capacidadeDeTiro!: number;

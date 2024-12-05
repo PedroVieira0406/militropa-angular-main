@@ -24,7 +24,6 @@ export class ArmaService {
     
     return this.httpClient.patch<Arma>(`${this.baseUrl}/image/upload`, formData);
   }
-
   findAll(page?: number, pageSize?: number): Observable<Arma[]> {
 
     let params = {};
