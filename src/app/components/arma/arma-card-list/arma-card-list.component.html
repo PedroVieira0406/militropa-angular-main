@@ -6,7 +6,7 @@
         <mat-card-title class="centered-text">{{card.titulo}}</mat-card-title>
 
         <mat-card-content class="centered-text">
-            {{card.modalidade}}
+            {{card.tipo}}
         </mat-card-content>
         <br/>
         <mat-card-content class="centered-text">
@@ -19,6 +19,7 @@
 
         <mat-card-footer>
             <button mat-button 
+                (click)="adicionarAoCarrinho(card)"
                 color="accent"
                 style="width: 100%; padding: 16px;">
                 Adicionar ao Carrinho

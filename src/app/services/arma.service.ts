@@ -62,10 +62,6 @@ export class ArmaService {
     return this.httpClient.put<Arma>(`${this.baseUrl}/${arma.id}`, arma);
   }
 
-  getUrlImage(nomeImagem: string): string {
-    return `${this.baseUrl}/image/download/${nomeImagem}`; 
-  }
-
   delete(arma: Arma): Observable<any>{
     return this.httpClient.delete<Arma>(`${this.baseUrl}/${arma.id}`);
   }

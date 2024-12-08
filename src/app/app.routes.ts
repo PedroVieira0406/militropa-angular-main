@@ -6,6 +6,7 @@ import { ArmaCardListComponent } from './components/arma/arma-card-list/arma-car
 import { ArmaFormComponent } from './components/arma/arma-form/arma-form.component';
 import { ArmaListComponent } from './components/arma/arma-list/arma-list.component';
 import { armaResolver } from './components/arma/resolver/arma.resolver';
+import { CarrinhoComponent } from './components/carrinho/carrinho.component';
 import { ClienteFormComponent } from './components/cliente/cliente-form/cliente-form.component';
 import { ClienteListComponent } from './components/cliente/cliente-list/cliente-list.component';
 import { clienteResolver } from './components/cliente/resolver/cliente.resolver';
@@ -21,10 +22,12 @@ import { funcionarioResolver } from './components/funcionario/resolver/funcionar
 import { MunicipioFormComponent } from './components/municipio/municipio-form/municipio-form.component';
 import { MunicipioListComponent } from './components/municipio/municipio-list/municipio-list.component';
 import { municipioResolver } from './components/municipio/resolver/municipio.resolver';
+import { AdminTemplateComponent } from './components/template/admin-template/admin-template.component';
 import { UserTemplateComponent } from './components/template/user-template/user-template.component';
 import { usuarioResolver } from './components/usuario/resolver/usuario.resolver';
 import { UsuarioFormComponent } from './components/usuario/usuario-form/usuario-form.component';
 import { UsuarioListComponent } from './components/usuario/usuario-list/usuario-list.component';
+import { authGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
     { 
@@ -35,11 +38,14 @@ export const routes: Routes = [
             {path: '', pathMatch: 'full', redirectTo: 'ecommerce'},
         
             { path: 'ecommerce', component: ArmaCardListComponent, title: 'Lista de Cards de Armas'},
+            { path: 'carrinho', component: CarrinhoComponent, title: 'Carrinho de Compras'},
         ]
     },
     {
-    path: 'admin', 
+        path: 'admin', 
+        component: AdminTemplateComponent, 
         title: 'Administração',
+        canActivate: [authGuard],
         children: [
 
         {path: '', redirectTo: 'usuarios', pathMatch: 'full'},
