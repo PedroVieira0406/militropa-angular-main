@@ -1,13 +1,13 @@
+import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { NgIf } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -31,24 +31,24 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
+      login: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const username = this.loginForm.get('username')?.value;
+      const login = this.loginForm.get('login')?.value;
       const password = this.loginForm.get('password')?.value;
 
-      this.authService.loginADM(username, password).subscribe ({
+      this.authService.loginADM(login, password).subscribe ({
         next: (resp) => {
           // redirecionando para a pagina principal
           this.router.navigateByUrl('/admin');
         },
         error: (err) => {
           console.log(err);
-          this.showSnackbarTopPosition("Username ou senha inválido");
+          this.showSnackbarTopPosition("Login ou senha inválido");
         }
       })
 

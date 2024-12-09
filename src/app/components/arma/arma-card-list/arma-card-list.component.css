@@ -1,7 +1,10 @@
 img {
     width: 100%;
     height: 240px;
-    object-fit: cover;
+    background-color: white; /* Define o fundo branco */
+    object-fit: contain; /* Faz com que a imagem se ajuste mantendo a proporção */
+    border: 1px solid #000000; /* Opcional: Adiciona uma borda para destaque */
+    padding: 5px;
 }
 
 .container {
@@ -9,6 +12,7 @@ img {
 }
 
 .responsive-grid {
+    background-color: lightgray;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
@@ -19,4 +23,5 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
+    color: antiquewhite;
 }

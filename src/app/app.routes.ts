@@ -19,6 +19,7 @@ import { estadoResolver } from './components/estado/resolver/estado.resolver';
 import { FuncionarioFormComponent } from './components/funcionario/funcionario-form/funcionario-form.component';
 import { FuncionarioListComponent } from './components/funcionario/funcionario-list/funcionario-list.component';
 import { funcionarioResolver } from './components/funcionario/resolver/funcionario.resolver';
+import { LoginComponent } from './components/login/login.component';
 import { MunicipioFormComponent } from './components/municipio/municipio-form/municipio-form.component';
 import { MunicipioListComponent } from './components/municipio/municipio-list/municipio-list.component';
 import { municipioResolver } from './components/municipio/resolver/municipio.resolver';
@@ -30,58 +31,57 @@ import { UsuarioListComponent } from './components/usuario/usuario-list/usuario-
 import { authGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
-    { 
+    {
         path: '',
         component: UserTemplateComponent,
         title: 'e-commerce',
         children: [
-            {path: '', pathMatch: 'full', redirectTo: 'ecommerce'},
-        
-            { path: 'ecommerce', component: ArmaCardListComponent, title: 'Lista de Cards de Armas'},
-            { path: 'carrinho', component: CarrinhoComponent, title: 'Carrinho de Compras'},
+            { path: '', pathMatch: 'full', redirectTo: 'ecommerce' },
+            
+            { path: 'ecommerce', component: ArmaCardListComponent, title: 'Lista de Cards de Armas' },
+            { path: 'carrinho', component: CarrinhoComponent, title: 'Carrinho de Compras' },
         ]
     },
     {
-        path: 'admin', 
-        component: AdminTemplateComponent, 
+        path: 'admin',
+        component: AdminTemplateComponent,
         title: 'Administração',
-        canActivate: [authGuard],
         children: [
+            { path: '', redirectTo: 'usuarios', pathMatch: 'full' },
 
-        {path: '', redirectTo: 'usuarios', pathMatch: 'full'},
+            { path: 'login', component: LoginComponent, title: 'Login'},
 
-        {path: 'estados', component: EstadoListComponent, title: 'Lista de Estados'},
-        {path: 'estados/new', component: EstadoFormComponent, title: 'Novo Estado'},
-        {path: 'estados/edit/:id', component: EstadoFormComponent, resolve: {estado: estadoResolver}},
+            { path: 'estados', component: EstadoListComponent, title: 'Lista de Estados', canActivate: [authGuard],},
+            { path: 'estados/new', component: EstadoFormComponent, title: 'Novo Estado' , canActivate: [authGuard],},
+            { path: 'estados/edit/:id', component: EstadoFormComponent, resolve: { estado: estadoResolver } , canActivate: [authGuard],},
 
-        {path: 'municipios', component: MunicipioListComponent, title: 'Lista de municipios'},
-        {path: 'municipios/new', component: MunicipioFormComponent, title: 'Novo municipio'},
-        {path: 'municipios/edit/:id', component: MunicipioFormComponent, resolve: {municipio: municipioResolver}},
-    
-        {path: 'armas', component: ArmaListComponent, title: 'Lista de Armas'},
-        {path: 'armas/new', component: ArmaFormComponent, title: 'Cadastrar Arma'},
-        {path: 'armas/edit/:id', component: ArmaFormComponent, resolve: {arma: armaResolver}},
+            { path: 'municipios', component: MunicipioListComponent, title: 'Lista de Municípios', canActivate: [authGuard], },
+            { path: 'municipios/new', component: MunicipioFormComponent, title: 'Novo Município' , canActivate: [authGuard],},
+            { path: 'municipios/edit/:id', component: MunicipioFormComponent, resolve: { municipio: municipioResolver }, canActivate: [authGuard], },
 
-        {path: 'enderecos',component: EnderecoListComponent, title: 'Lista de Enderecos'},
-        {path: 'enderecos/new',component: EnderecoFormComponent, title: 'Novo Endereco'},
-        {path: 'enderecos/edit/:id',component: EnderecoFormComponent, resolve: {endereco: enderecoResolver}},
-    
-        {path: 'funcionarios',component: FuncionarioListComponent, title: 'Lista de Funcionarios'},
-        {path: 'funcionarios/new',component: FuncionarioFormComponent, title: 'Novo Funcionario'},
-        {path: 'funcionarios/edit/:id',component: FuncionarioFormComponent, resolve: {funcionario: funcionarioResolver}},
+            { path: 'armas', component: ArmaListComponent, title: 'Lista de Armas', canActivate: [authGuard], },
+            { path: 'armas/new', component: ArmaFormComponent, title: 'Cadastrar Arma', canActivate: [authGuard], },
+            { path: 'armas/edit/:id', component: ArmaFormComponent, resolve: { arma: armaResolver} , canActivate: [authGuard],},
 
-        {path: 'clientes',component: ClienteListComponent, title: 'Lista de Clientes'},
-        {path: 'clientes/new',component: ClienteFormComponent, title: 'Novo Cliente'},
-        {path: 'clientes/edit/:id',component: ClienteFormComponent, resolve: {cliente: clienteResolver}},
+            { path: 'enderecos', component: EnderecoListComponent, title: 'Lista de Endereços', canActivate: [authGuard], },
+            { path: 'enderecos/new', component: EnderecoFormComponent, title: 'Novo Endereço' , canActivate: [authGuard],},
+            { path: 'enderecos/edit/:id', component: EnderecoFormComponent, resolve: { endereco: enderecoResolver } , canActivate: [authGuard],},
 
-        {path: 'acabamentos',component: AcabamentoListComponent, title: 'Lista de Acabamentos'},
-        {path: 'acabamentos/new',component: AcabamentoFormComponent, title: 'Novo acabamento'},
-        {path: 'acabamentos/edit/:id',component: AcabamentoFormComponent, resolve: {acabamento: acabamentoResolver}},
+            { path: 'funcionarios', component: FuncionarioListComponent, title: 'Lista de Funcionários', canActivate: [authGuard], },
+            { path: 'funcionarios/new', component: FuncionarioFormComponent, title: 'Novo Funcionário', canActivate: [authGuard], },
+            { path: 'funcionarios/edit/:id', component: FuncionarioFormComponent, resolve: { funcionario: funcionarioResolver } , canActivate: [authGuard],},
 
-        {path: 'usuarios',component: UsuarioListComponent, title: 'Lista de Usuario'},
-        {path: 'usuarios/new',component: UsuarioFormComponent, title: 'Novo Usuario'},
-        {path: 'usuarios/edit/:id',component: UsuarioFormComponent, resolve: {usuario: usuarioResolver}}
-    
-    ]
-    }
+            { path: 'clientes', component: ClienteListComponent, title: 'Lista de Clientes', canActivate: [authGuard], },
+            { path: 'clientes/new', component: ClienteFormComponent, title: 'Novo Cliente', canActivate: [authGuard], },
+            { path: 'clientes/edit/:id', component: ClienteFormComponent, resolve: { cliente: clienteResolver } , canActivate: [authGuard],},
+
+            { path: 'acabamentos', component: AcabamentoListComponent, title: 'Lista de Acabamentos' , canActivate: [authGuard],},
+            { path: 'acabamentos/new', component: AcabamentoFormComponent, title: 'Novo Acabamento', canActivate: [authGuard], },
+            { path: 'acabamentos/edit/:id', component: AcabamentoFormComponent, resolve: { acabamento: acabamentoResolver }, canActivate: [authGuard], },
+
+            { path: 'usuarios', component: UsuarioListComponent, title: 'Lista de Usuários', canActivate: [authGuard], },
+            { path: 'usuarios/new', component: UsuarioFormComponent, title: 'Novo Usuário', canActivate: [authGuard], },
+            { path: 'usuarios/edit/:id', component: UsuarioFormComponent, resolve: { usuario: usuarioResolver } , canActivate: [authGuard],},
+        ]
+    },
 ];
