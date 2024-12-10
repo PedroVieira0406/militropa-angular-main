@@ -1,4 +1,3 @@
-import { NgFor } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,12 +10,12 @@ import { AcabamentoService } from '../../../services/acabamento.service';
 @Component({
   selector: 'app-acabamento-list',
   standalone: true,
-  imports: [NgFor, MatButtonModule, RouterModule, MatIconModule, MatTableModule, MatToolbarModule],
+  imports: [MatButtonModule, RouterModule, MatIconModule, MatTableModule, MatToolbarModule],
   templateUrl: './acabamento-list.component.html',
   styleUrl: './acabamento-list.component.css'
 })
 export class AcabamentoListComponent implements OnInit{
-  displayedColumns: string[] = ['id', 'material', 'acao']; 
+  displayedColumns: string[] = ['id', 'nome', 'acao']; 
   acabamentos: Acabamento[] = [];
 
    // variaveis de controle para a paginacao

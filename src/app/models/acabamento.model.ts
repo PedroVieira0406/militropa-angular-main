@@ -1,4 +1,4 @@
 export class Acabamento {
     id!: number;
-    label!: string;
+    nome!: string;
 }

@@ -16,25 +16,24 @@
     </ng-container>
   
     <!-- Nome Column -->
-    <ng-container matColumnDef="material">
+    <ng-container matColumnDef="nome">
       <th mat-header-cell *matHeaderCellDef> Material </th>
-      <td mat-cell *matCellDef="let element"> {{element.material}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.nome}} </td>
     </ng-container>
   
     <!-- Acao Column -->
     <ng-container matColumnDef="acao">
       <th mat-header-cell *matHeaderCellDef> Ação </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="primary" routerLink="/acabamentos/edit/{{element.id}}">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button
-                color="warn"
-                (click)="excluir(element)">
-          <mat-icon>delete</mat-icon>
-        </button>
+          <button mat-icon-button color="primary"
+          routerLink="edit/{{element.id}}">
+              <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn">
+              <mat-icon>delete</mat-icon>
+          </button>
       </td>
-    </ng-container>
+  </ng-container>
   
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

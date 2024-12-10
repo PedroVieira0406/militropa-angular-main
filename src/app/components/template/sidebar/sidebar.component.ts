@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatList, MatListItem, MatNavList } from '@angular/material/list';
-import { MatDrawer, MatDrawerContainer, MatDrawerContent, MatSidenav } from '@angular/material/sidenav';
+import { MatListItem, MatNavList } from '@angular/material/list';
+import { MatDrawer, MatDrawerContainer, MatDrawerContent } from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { SidebarService } from '../../../services/sidebar.service';
@@ -9,8 +9,8 @@ import { SidebarService } from '../../../services/sidebar.service';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [MatSidenav, MatDrawer, MatDrawerContainer, RouterModule,
-    MatDrawerContent, MatToolbar, MatList, MatNavList, MatListItem, RouterOutlet],
+  imports: [ MatDrawer, MatDrawerContainer, RouterModule,
+            MatDrawerContent, MatToolbar, MatNavList, MatListItem, RouterOutlet],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
