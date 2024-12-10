@@ -29,23 +29,32 @@ import { ArmaService } from '../../../services/arma.service';
   templateUrl: './arma-list.component.html',
   styleUrl: './arma-list.component.css'
 })
-export class ArmaListComponent implements OnInit{
-  displayedColumns: string[] = ['id', 'nome', 'acao']; 
+export class ArmaListComponent implements OnInit {
+  displayedColumns: string[] = ['id', 'nome','tipoArma','modelo','acao'];
   armas: Arma[] = [];
 
   totalRecords = 0;
-  pageSize = 5;
+  pageSize = 10;
   page = 0;
   filtro: string = '';
-  
+
   constructor(private armaService: ArmaService,
-              private router: Router,
-              private cdr: ChangeDetectorRef) {}
+    private router: Router,
+    private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.armaService.findAll().subscribe(data => {
+    this.armaService.findAll(this.page, this.pageSize).subscribe(data => {
       this.armas = data;
+      console.log(this.armas);
     });
+
+    this.armaService.count().subscribe(data => {
+      this.totalRecords = data;
+      console.log(this.armas);
+    });
+
+    this.buscarArmas();
+    this.buscarTodos();
   }
 
   paginar(event: PageEvent): void {
@@ -56,7 +65,7 @@ export class ArmaListComponent implements OnInit{
   }
 
 
-  
+
   excluir(arma: Arma): void {
     if (arma.id != null) {
       this.armaService.delete(arma).subscribe({
@@ -67,26 +76,26 @@ export class ArmaListComponent implements OnInit{
   }
 
   buscarArmas(): void {
-    if(this.filtro){
-      this.armaService.findByNome(this.filtro, this.page, this.pageSize).subscribe(data => { 
+    if (this.filtro) {
+      this.armaService.findByNome(this.filtro, this.page, this.pageSize).subscribe(data => {
         this.armas = data;
       },);
     }
     else {
-      this.armaService.findAll(this.page, this.pageSize).subscribe(data => { 
+      this.armaService.findAll(this.page, this.pageSize).subscribe(data => {
         this.armas = data;
       },);
     }
   }
 
   buscarTodos(): void {
-    const count$ = this.filtro 
-      ? this.armaService.countBynome(this.filtro) 
+    const count$ = this.filtro
+      ? this.armaService.countBynome(this.filtro)
       : this.armaService.count();
 
     count$.subscribe(
-      data => { 
-        this.totalRecords = data; 
+      data => {
+        this.totalRecords = data;
       },
       error => console.error('Erro ao contar usuários', error)
     );

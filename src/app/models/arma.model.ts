@@ -1,5 +1,5 @@
 import { Acabamento } from "./acabamento.model";
-import { TipoArma } from "./tipo-arma.model";
+import { TipoArma } from "./tipoArma.model";
 
 export class Arma {
     id!: number;

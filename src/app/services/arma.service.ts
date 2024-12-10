@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Arma } from '../models/arma.model';
+import { TipoArma } from '../models/tipoArma.model';
 
 @Injectable({
   providedIn: 'root'
@@ -83,5 +84,9 @@ export class ArmaService {
 
   countBynome(nome: string): Observable<number>{
     return this.httpClient.get<number>(`${this.baseUrl}/count/search/${nome}`);
+  }
+
+  findTipoArmas(): Observable<TipoArma[]> {
+    return this.httpClient.get<TipoArma[]>(`${this.baseUrl}/tipoArmas`);
   }
 }

@@ -1,32 +1,40 @@
-.toolbar-title{
-    flex: 1;
-    text-align: center;
-  }
-  
-  .flex-container{
-    display: flex;
-    align-items: center;
-    width: 100%;
-  }
-  
-  .mat-column-id{
-    width: 5em;
-    border-right: 1px solid currentColor;
-    padding-right: 244 px;
-    text-align: center;
-  }
-  
-  .mat-column-nome{
-    width: 100%;
-  }
-  
-  .mat-column-sigla{
-    text-align: center;
-    width: 5em;
-  }
-  
-  .mat-column-acao{
-    text-align: center;
-    min-width: 10em;
-  }
-  
+.toolbar-title {
+  flex: 1;
+  text-align: center;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.mat-column-id {
+  width: 5em;
+  border-right: 1px solid currentColor;
+  padding-right: 244 px;
+  text-align: center;
+}
+
+.mat-column-nome {
+  width: 40%;
+}
+
+.mat-column-tipo {
+  width: 30%;
+}
+
+.mat-column-modelo {
+  width: 40%;
+
+}
+
+.mat-column-sigla {
+  text-align: center;
+  width: 5em;
+}
+
+.mat-column-acao {
+  text-align: center;
+  min-width: 10em;
+}

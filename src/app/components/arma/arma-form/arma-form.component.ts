@@ -1,4 +1,4 @@
-import { Location, NgIf } from '@angular/common';
+import { Location, NgFor, NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
@@ -12,6 +12,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Acabamento } from '../../../models/acabamento.model';
 import { Arma } from '../../../models/arma.model';
+import { TipoArma } from '../../../models/tipoArma.model';
+import { AcabamentoService } from '../../../services/acabamento.service';
 import { ArmaService } from '../../../services/arma.service';
 
 @Component({
@@ -20,7 +22,7 @@ import { ArmaService } from '../../../services/arma.service';
   imports: [ReactiveFormsModule, MatFormFieldModule,
     MatInputModule, MatButtonModule, MatCardModule, MatToolbarModule,
     RouterModule, MatSelectModule, MatIcon, NgIf,
-    MatIconModule, FormsModule,],
+    MatIconModule, FormsModule,NgFor],
   templateUrl: './arma-form.component.html',
   styleUrl: './arma-form.component.css'
 })
@@ -29,6 +31,7 @@ export class ArmaFormComponent implements OnInit{
   formGroup: FormGroup;
   armas: Arma[] = [];
   acabamentos: Acabamento[] = [];
+  tipoArmas: TipoArma [] = [];
 
   fileName: string = '';
   selectedFile: File | null = null; 
@@ -36,6 +39,7 @@ export class ArmaFormComponent implements OnInit{
 
   constructor(private formBuilder: FormBuilder,
     private armaService: ArmaService,
+    private acabamentoService: AcabamentoService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private location: Location) {
@@ -44,13 +48,12 @@ export class ArmaFormComponent implements OnInit{
     this.formGroup = this.formBuilder.group({
       id:[null],
       nome:['', Validators.required],
-      estado:[null],
       qtdNoEstoque: ['', Validators.required],
       preco: ['', Validators.required],
       descricao: ['', Validators.required],
-      tipo: [1],
+      tipoArma: [null],
       marca: ['', Validators.required],
-      acabamento: [[], Validators.required],  // Uma lista de IDs vazia
+      acabamento: [null],
       calibre: ['', Validators.required],
       comprimentoDoCano: ['', Validators.required],
       capacidadeDeTiro: ['', Validators.required],
@@ -62,23 +65,26 @@ export class ArmaFormComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.armaService.findAll().subscribe(data =>{
-      this.armas = data;
-      this.initializeForm();
+    this.armaService.findTipoArmas().subscribe(data => {
+      this.tipoArmas = data;
+    });
+    this.acabamentoService.findAll().subscribe(data=> {
+      this.acabamentos = data;
     })
+    this.initializeForm();
   }
 
   initializeForm(): void{
     const arma: Arma = this.activatedRoute.snapshot.data['arma'];
-
-    //selecionando o estasdo
-//    const estado = this.armas.find(estado => estado.id === (municipio?.estado?.id || null));
 
     // carregando a imagem do preview
     if (arma && arma.nomeImagem) {
       this.imagePreview = this.armaService.getUrlImage(arma.nomeImagem);
       this.fileName = arma.nomeImagem;
     }
+
+  // encontrando a referencia ddo tipo de arma no vetor
+  const tipoArma = this.tipoArmas.find(m => m.id === (arma?.tipo?.id || null));
 
   // Obtendo a lista de acabamentos associados à arma (caso existam)
   const acabamentoIds = arma?.idsAcabamentos?.map(acabamento => acabamento.id) || [];
@@ -89,10 +95,9 @@ export class ArmaFormComponent implements OnInit{
       qtdNoEstoque: [(arma && arma.qtdNoEstoque) ? arma.qtdNoEstoque : '', Validators.required],
       preco: [(arma && arma.preco) ? arma.preco : '', Validators.required],
       descricao: [(arma && arma.descricao) ? arma.descricao : '', Validators.required],
-      tipo: [1],
+      tipoArma: [tipoArma],
       marca: [(arma && arma.marca) ? arma.marca : '', Validators.required],
-      // Acabamentos como uma lista de IDs
-      acabamento: [arma!.idsAcabamentos || [], Validators.required],
+      acabamento: [acabamentoIds],
       calibre: [(arma && arma.calibre) ? arma.calibre : '', Validators.required],
       comprimentoDoCano: [(arma && arma.comprimentoDoCano) ? arma.comprimentoDoCano : '', Validators.required],
       capacidadeDeTiro: [(arma && arma.capacidadeDeTiro) ? arma.capacidadeDeTiro : '', Validators.required],

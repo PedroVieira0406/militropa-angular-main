@@ -1,31 +1,58 @@
-/* Garante que o contêiner tenha o tamanho total da tela */
+/* Estilos exclusivos para a sidebar escura */
 .sidebar-dark-theme {
     height: 100vh;
-    /* Altura total da tela */
     display: flex;
-    flex-direction: column;
-    /* Organiza o conteúdo verticalmente */
+    background-color: #121212;
+    color: #fff;
 }
 
-/* Sidebar sempre do tamanho da tela */
+/* Estilização do drawer */
 .sidebar-dark-theme mat-drawer {
-    height: 100%;
     width: 250px;
     background-color: #1e1e1e;
     color: #ffffff;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
 }
 
-/* Conteúdo principal ajustado */
-mat-drawer-content {
-    height: 100vh;
-    /* Garante que o conteúdo também preencha a tela */
-    overflow-y: auto;
-    /* Permite rolagem caso o conteúdo seja maior que a tela */
-    background-color: #fff;
-    /* Fundo claro para contraste */
-    color: #000;
-    /* Texto escuro */
+/* Estilo para o toolbar no drawer */
+.sidebar-dark-theme mat-toolbar {
+    background-color: #333;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Estilo para a lista de navegação */
+.sidebar-dark-theme mat-nav-list {
+    margin-top: 16px;
+}
+
+/* Itens da lista */
+.sidebar-dark-theme mat-list-item {
+    font-size: 16px;
+    
+    color: #2804a7;
+    margin: 8px 0;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+/* Estilo para spans de título de seção */
+.sidebar-dark-theme mat-nav-list span {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    color: #bbb;
+    margin: 16px 0 8px;
+}
+
+/* Efeito hover nos itens da lista */
+.sidebar-dark-theme mat-list-item:hover {
+    color: #ffffff;
+}
+
+/* Estilo do conteúdo principal */
+.sidebar-dark-theme mat-drawer-content {
+    background-color: #121212;
+    color: #fff;
+    padding: 16px;
 }
