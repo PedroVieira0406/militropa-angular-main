@@ -21,14 +21,14 @@
 
                 <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>CPF</mat-label>
-                    <input matInput type="text" formControlName="cpf">
+                    <input matInput type="text" formControlName="cpf" (blur)="formatCpf()">
                     <mat-error *ngIf="formGroup.get('cpf')?.invalid && formGroup.get('cpf')?.touched">
                         <!-- erros do front-end -->
                         {{getErrorMessage('cpf', formGroup.get('cpf')?.errors)}}
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('cpf')?.hasError('apiError')) {
-                            <span>{{formGroup.get('cpf')?.getError('apiError')}}</span> 
+                            <span>{{formGroup.get('cpf')?.getError('apiError')}}</span>
                         }
                     </mat-error>
                 </mat-form-field>

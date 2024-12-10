@@ -47,7 +47,7 @@ export const routes: Routes = [
         component: AdminTemplateComponent,
         title: 'Administração',
         children: [
-            { path: '', redirectTo: 'usuarios', pathMatch: 'full' },
+            { path: '', redirectTo: 'login', pathMatch: 'full' },
 
             { path: 'login', component: LoginComponent, title: 'Login'},
 

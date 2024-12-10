@@ -118,6 +118,14 @@ export class ClienteFormComponent {
         this.enderecosArray.removeAt(index);
       }
     
+      formatCpf() {
+        const cpfControl = this.formGroup.get('firstFormGroup.cpf');
+        if (cpfControl && cpfControl.value) {
+          const formattedCpf = cpfControl.value.replace(/\D/g, '') // Remove não dígitos
+            .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+          cpfControl.setValue(formattedCpf);
+        }
+      }
 
   salvar() {
     this.formGroup.markAllAsTouched();
