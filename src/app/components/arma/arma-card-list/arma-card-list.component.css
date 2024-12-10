@@ -1,14 +1,50 @@
 img {
     width: 100%;
     height: 240px;
-    background-color: white; /* Define o fundo branco */
-    object-fit: contain; /* Faz com que a imagem se ajuste mantendo a proporção */
-    border: 1px solid #000000; /* Opcional: Adiciona uma borda para destaque */
+    background-color: white;
+    /* Define o fundo branco */
+    object-fit: contain;
+    /* Faz com que a imagem se ajuste mantendo a proporção */
+    border: 1px solid #000000;
+    /* Opcional: Adiciona uma borda para destaque */
     padding: 5px;
+}
+
+.flex-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
 .container {
     padding: 20px;
+    background-color: dimgray;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+.input-field {
+    flex: 1;
+}
+
+.search-button {
+    transition: transform 0.2s;
+}
+
+.search-button:hover {
+    transform: scale(1.1);
 }
 
 .responsive-grid {

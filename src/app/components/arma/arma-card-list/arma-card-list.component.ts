@@ -1,8 +1,17 @@
 import { NgFor } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardActions, MatCardContent, MatCardFooter, MatCardModule, MatCardTitle } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule } from '@angular/router';
 import { Arma } from '../../../models/arma.model';
 import { ArmaService } from '../../../services/arma.service';
 import { CarrinhoService } from '../../../services/carrinho.service';
@@ -18,14 +27,28 @@ type Card = {
 @Component({
   selector: 'app-arma-card-list',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, NgFor, 
-    MatCardActions, MatCardContent, MatCardTitle, MatCardFooter],
+  imports: [MatCardModule, MatButtonModule, NgFor,
+    MatCardActions, MatCardContent, MatCardTitle, MatCardFooter, MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTableModule,
+    RouterModule,
+    MatMenuModule,
+    MatPaginatorModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule],
   templateUrl: './arma-card-list.component.html',
   styleUrl: './arma-card-list.component.css'
 })
+
 export class ArmaCardListComponent implements OnInit {
   armas: Arma[] = [];
   cards = signal<Card[]>([]);
+  totalRecords = 0;
+  pageSize = 10;
+  page = 0;
+  filtro: string = '';
 
   constructor(private armaService: ArmaService,
                       private carrinhoService: CarrinhoService,
@@ -33,7 +56,8 @@ export class ArmaCardListComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    this.carregarArmas();
+    this.buscarTodos(); // Carrega a contagem total de registros
+    this.filtrar(); // Carrega os dados iniciais
   }
 
   carregarArmas() {
@@ -66,6 +90,46 @@ export class ArmaCardListComponent implements OnInit {
       preco: card.preco,
       quantidade: 1
     });
+  }
+
+  buscarArmas(): void {
+    if(this.filtro){
+      this.armaService.findByNome(this.filtro, this.page, this.pageSize).subscribe(data => { 
+        this.armas = data;
+        this.carregarCards();
+      },);
+    }
+    else {
+      this.armaService.findAll(this.page, this.pageSize).subscribe(data => { 
+        this.armas = data;
+        this.carregarCards();
+      },);
+    }
+  }
+
+  buscarTodos(): void {
+    const count$ = this.filtro 
+      ? this.armaService.countBynome(this.filtro) 
+      : this.armaService.count();
+
+    count$.subscribe(
+      data => { 
+        this.totalRecords = data; 
+      },
+      error => console.error('Erro ao contar usuários', error)
+    );
+  }
+
+  filtrar(): void {
+    this.buscarTodos();
+    this.buscarArmas();
+  }
+
+  paginar(event: PageEvent): void {
+    this.page = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.buscarTodos();
+    this.ngOnInit();
   }
 
   showSnackbarTopPosition(content: any) {

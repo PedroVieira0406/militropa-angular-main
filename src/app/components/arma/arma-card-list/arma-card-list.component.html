@@ -1,3 +1,15 @@
+<div class="container">
+    <div class="input-container">
+        <mat-form-field appearance="outline" class="input-field">
+            <mat-label>Pesquisar pelo Nome </mat-label>
+            <input [(ngModel)]="filtro" matInput placeholder="Ex: Glock" #input (keyup.enter)="filtrar()">
+        </mat-form-field>
+        <button mat-icon-button color="primary" class="search-button" (click)="filtrar()">
+            <mat-icon>search</mat-icon>
+        </button>
+    </div>
+</div>
+
 <div class="container responsive-grid">
     <mat-card *ngFor="let card of cards()">
         
@@ -25,6 +37,9 @@
                 Adicionar ao Carrinho
             </button>
         </mat-card-footer>
-
+        
     </mat-card>
 </div>
+
+<mat-paginator [pageSizeOptions]="[10,20,30,50]" [pageSize]="pageSize" [length]="totalRecords" (page)="paginar($event)">
+</mat-paginator>
