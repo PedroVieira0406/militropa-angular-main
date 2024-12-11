@@ -74,7 +74,7 @@ export class ArmaCardListComponent implements OnInit {
       cards.push({
         idArma: arma.id,
         titulo: arma.nome,
-        tipo: arma.tipo.label,
+        tipo: arma.tipoArma.label,
         preco: arma.preco,
         imageUrl: this.armaService.getUrlImage(arma.nomeImagem)
       })

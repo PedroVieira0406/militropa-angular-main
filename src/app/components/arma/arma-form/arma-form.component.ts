@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Acabamento } from '../../../models/acabamento.model';
@@ -22,38 +23,39 @@ import { ArmaService } from '../../../services/arma.service';
   imports: [ReactiveFormsModule, MatFormFieldModule,
     MatInputModule, MatButtonModule, MatCardModule, MatToolbarModule,
     RouterModule, MatSelectModule, MatIcon, NgIf,
-    MatIconModule, FormsModule,NgFor],
+    MatIconModule, FormsModule, NgFor,],
   templateUrl: './arma-form.component.html',
   styleUrl: './arma-form.component.css'
 })
-export class ArmaFormComponent implements OnInit{
+export class ArmaFormComponent implements OnInit {
 
   formGroup: FormGroup;
   armas: Arma[] = [];
   acabamentos: Acabamento[] = [];
-  tipoArmas: TipoArma [] = [];
+  tipoArmas: TipoArma[] = [];
 
   fileName: string = '';
-  selectedFile: File | null = null; 
+  selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
 
   constructor(private formBuilder: FormBuilder,
     private armaService: ArmaService,
     private acabamentoService: AcabamentoService,
+    private snackBar: MatSnackBar,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private location: Location) {
 
     //inicializando
     this.formGroup = this.formBuilder.group({
-      id:[null],
-      nome:['', Validators.required],
+      id: [null],
+      nome: ['', Validators.required],
       qtdNoEstoque: ['', Validators.required],
       preco: ['', Validators.required],
       descricao: ['', Validators.required],
-      tipoArma: [null],
+      tipoArma: [null, Validators.required],
       marca: ['', Validators.required],
-      acabamento: [null],
+      idsAcabamentos: [null , Validators.required],
       calibre: ['', Validators.required],
       comprimentoDoCano: ['', Validators.required],
       capacidadeDeTiro: ['', Validators.required],
@@ -68,13 +70,13 @@ export class ArmaFormComponent implements OnInit{
     this.armaService.findTipoArmas().subscribe(data => {
       this.tipoArmas = data;
     });
-    this.acabamentoService.findAll().subscribe(data=> {
+    this.acabamentoService.findAll().subscribe(data => {
       this.acabamentos = data;
     })
     this.initializeForm();
   }
 
-  initializeForm(): void{
+  initializeForm(): void {
     const arma: Arma = this.activatedRoute.snapshot.data['arma'];
 
     // carregando a imagem do preview
@@ -83,21 +85,21 @@ export class ArmaFormComponent implements OnInit{
       this.fileName = arma.nomeImagem;
     }
 
-  // encontrando a referencia ddo tipo de arma no vetor
-  const tipoArma = this.tipoArmas.find(m => m.id === (arma?.tipo?.id || null));
+    // encontrando a referencia ddo tipo de arma no vetor
+    const tipoArma = this.tipoArmas.find(m => m.id === (arma?.tipoArma?.id || null));
 
-  // Obtendo a lista de acabamentos associados à arma (caso existam)
-  const acabamentoIds = arma?.idsAcabamentos?.map(acabamento => acabamento.id) || [];
+    // Obtendo a lista de acabamentos associados à arma (caso existam)
+    const acabamentoIds = arma?.idsAcabamentos?.map(acabamento => acabamento.id) || [];
 
     this.formGroup = this.formBuilder.group({
-      id:[(arma && arma.id) ? arma.id : null],
+      id: [(arma && arma.id) ? arma.id : null],
       nome: [(arma && arma.nome) ? arma.nome : '', Validators.required],
       qtdNoEstoque: [(arma && arma.qtdNoEstoque) ? arma.qtdNoEstoque : '', Validators.required],
       preco: [(arma && arma.preco) ? arma.preco : '', Validators.required],
       descricao: [(arma && arma.descricao) ? arma.descricao : '', Validators.required],
-      tipoArma: [tipoArma],
+      tipoArma: [tipoArma, Validators.required],
       marca: [(arma && arma.marca) ? arma.marca : '', Validators.required],
-      acabamento: [acabamentoIds],
+      idsAcabamentos: [acabamentoIds, Validators.required],
       calibre: [(arma && arma.calibre) ? arma.calibre : '', Validators.required],
       comprimentoDoCano: [(arma && arma.comprimentoDoCano) ? arma.comprimentoDoCano : '', Validators.required],
       capacidadeDeTiro: [(arma && arma.capacidadeDeTiro) ? arma.capacidadeDeTiro : '', Validators.required],
@@ -106,55 +108,49 @@ export class ArmaFormComponent implements OnInit{
       modelo: [(arma && arma.modelo) ? arma.modelo : '', Validators.required],
       rna: [(arma && arma.rna) ? arma.rna : '', Validators.required],
 
-      
+
     });
-  }
-
-  tratarErros(errorResponse: HttpErrorResponse) {
-
-    if (errorResponse.status === 400) {
-      if (errorResponse.error?.errors) {
-        errorResponse.error.errors.forEach((validationError: any) => {
-          const formControl = this.formGroup.get(validationError.fieldName);
-
-          if (formControl) {
-            formControl.setErrors({apiError: validationError.message})
-          }
-
-        });
-      }
-    } else if (errorResponse.status < 400){
-      alert(errorResponse.error?.message || 'Erro genérico do envio do formulário.');
-    } else if (errorResponse.status >= 500) {
-      alert('Erro interno do servidor.');
-    }
-
   }
 
   salvar() {
     this.formGroup.markAllAsTouched();
     if (this.formGroup.valid) {
       const arma = this.formGroup.value;
-
-      // selecionando a operacao (insert ou update)
       const operacao = arma.id == null
-      ? this.armaService.insert(arma)
-      : this.armaService.update(arma);
+        ? this.armaService.insert(arma)
+        : this.armaService.update(arma);
 
-      // executando a operacao
       operacao.subscribe({
-        next: () => this.router.navigateByUrl('/admin/armas'),
+        next: (armaCadastrado) => {
+          if(arma && arma.id){
+            this.uploadImage(arma.id);
+          } else if (armaCadastrado && armaCadastrado.id){
+            this.uploadImage(armaCadastrado.id);
+          }
+          this.router.navigateByUrl('/admin/armas');
+          this.snackBar.open('O Arma foi salvo com Sucesso!!', 'Fechar', { duration: 3000 });
+        },
         error: (error) => {
-          console.log('Erro ao Salvar' + JSON.stringify(error));
+          console.error('Erro ao Salvar' + JSON.stringify(error));
           this.tratarErros(error);
+          this.snackBar.open('Erro ao tentar salvar o Arma', 'Fechar', { duration: 3000 });
         }
       });
+      console.log(arma);
+    }
+  }
 
-      console.log('Dados enviados:', arma);
-
-    }
-    
+  getSelectedAcabamentosNames(): string[] {
+    const selectedIds: number[] = this.formGroup.get('idsAcabamentos')?.value || [];
+    return selectedIds
+      .map((id: number) => {
+        const acabamento = this.acabamentos.find(a => a.id === id);
+        return acabamento ? acabamento.nome : null;
+      })
+      .filter((name): name is string => name !== null); // Garantindo que o tipo é string
   }
+
+
   carregarImagemSelecionada(event: any) {
     this.selectedFile = event.target.files[0];
 
@@ -173,6 +169,7 @@ export class ArmaFormComponent implements OnInit{
       this.armaService.uploadImage(armaId, this.selectedFile.name, this.selectedFile)
       .subscribe({
         next: () => {
+          console.log('voltarpagina1');
           this.voltarPagina();
         },
         error: err => {
@@ -181,6 +178,7 @@ export class ArmaFormComponent implements OnInit{
         }
       })
     } else {
+      console.log('voltarpagina2');
       this.voltarPagina();
     }
   }
@@ -205,6 +203,35 @@ export class ArmaFormComponent implements OnInit{
     }
   }
 
+  showSnackbarTopPosition(content: any) {
+    this.snackBar.open(content, 'fechar', {
+      duration: 3000,
+      verticalPosition: "top",
+      horizontalPosition: "center"
+    });
+  }
+
+  tratarErros(errorResponse: HttpErrorResponse) {
+
+    if (errorResponse.status === 400) {
+      if (errorResponse.error?.errors) {
+        errorResponse.error.errors.forEach((validationError: any) => {
+          const formControl = this.formGroup.get(validationError.fieldName);
+
+          if (formControl) {
+            formControl.setErrors({ apiError: validationError.message })
+          }
+
+        });
+      }
+    } else if (errorResponse.status < 400) {
+      alert(errorResponse.error?.message || 'Erro genérico do envio do formulário.');
+    } else if (errorResponse.status >= 500) {
+      alert('Erro interno do servidor.');
+    }
+
+  }
+
   getErrorMessage(controlName: string, errors: ValidationErrors | null | undefined): string {
     if (!errors) {
       return '';
@@ -219,63 +246,63 @@ export class ArmaFormComponent implements OnInit{
   }
   errorMensages: { [controlName: string]: { [errorName: string]: string } } = {
     nome: {
-        required: 'Nome é obrigatório',
-        apiError: '',
+      required: 'Nome é obrigatório',
+      apiError: '',
     },
     qtdNoEstoque: {
-        required: 'Quantidade de estoque é obrigatória',
-        apiError: '',
+      required: 'Quantidade de estoque é obrigatória',
+      apiError: '',
     },
     descricao: {
-        required: 'Descrição é obrigatória',
-        apiError: '',
+      required: 'Descrição é obrigatória',
+      apiError: '',
     },
     preco: {
       required: 'Preço é obrigatório',
       apiError: '',
-  },
-  tipo: {
-    required: 'Tipo de disparo é obrigatório',
-    apiError: '',
-},
-marca: {
-  required: 'marca é obrigatória',
-  apiError: '',
-},
-senha: {
-  required: 'Senha é obrigatória',
-  minLength: 'O tamanho mínimo da senha é 5 dígitos.',
-  apiError: '',
-},
-acabamento: {
-  required: 'Acabamento é obrigatório',
-  apiError: '',
-},
-calibre: {
-  required: 'calibre é obrigatório',
-  apiError: '',
-},
-comprimentoDoCano: {
-  required: 'Comprimento Do Cano é obrigatória',
-  apiError: '',
-},
-capacidadeDeTiro: {
-  required: 'Capacidade de tiro é obrigatória',
-  apiError: '',
-},
-numeroSigma: {
-  required: 'numero Sigma é obrigatório',
-  apiError: '',
-},
-numeroDaArma: {
-  required: 'Numero da arma é obrigatório',
-  apiError: '',
-},
+    },
+    tipoArma: {
+      required: 'Tipo de disparo é obrigatório',
+      apiError: '',
+    },
+    marca: {
+      required: 'marca é obrigatória',
+      apiError: '',
+    },
+    senha: {
+      required: 'Senha é obrigatória',
+      minLength: 'O tamanho mínimo da senha é 5 dígitos.',
+      apiError: '',
+    },
+    acabamento: {
+      required: 'Acabamento é obrigatório',
+      apiError: '',
+    },
+    calibre: {
+      required: 'calibre é obrigatório',
+      apiError: '',
+    },
+    comprimentoDoCano: {
+      required: 'Comprimento Do Cano é obrigatória',
+      apiError: '',
+    },
+    capacidadeDeTiro: {
+      required: 'Capacidade de tiro é obrigatória',
+      apiError: '',
+    },
+    numeroSigma: {
+      required: 'numero Sigma é obrigatório',
+      apiError: '',
+    },
+    numeroDaArma: {
+      required: 'Numero da arma é obrigatório',
+      apiError: '',
+    },
 
-rna: {
-  required: 'rna é obrigatória',
-  apiError: '',
-},
+    rna: {
+      required: 'rna é obrigatória',
+      apiError: '',
+    },
 
-};
+  };
 }

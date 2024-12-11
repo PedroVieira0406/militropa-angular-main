@@ -62,8 +62,8 @@
 
                 <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>Tipo de arma</mat-label>
-                    <mat-select formControlName="tipoArma" #selectTipo>
-                        <mat-option *ngFor="let tipoArma of tipoArmas" [value]="tipoArma">
+                    <mat-select formControlName="tipoArma" #selectTipoArma>
+                        <mat-option *ngFor="let tipoArma of tipoArmas" [value]="tipoArma.id">
                             {{ tipoArma.label }}
                         </mat-option>
                     </mat-select>
@@ -84,14 +84,19 @@
 
                 <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>Selecione os acabamentos</mat-label>
-                    <mat-select formControlName="acabamento" multiple>
+                    <mat-select formControlName="idsAcabamentos" multiple>
                         <mat-select-trigger>
-                            {{ formGroup.get('acabamento')?.value?.[0]?.nome || 'Nenhum selecionado' }}
-                            <span *ngIf="(formGroup.get('acabamento')?.value?.length || 0) > 1">
-                                (+{{ (formGroup.get('acabamento')?.value?.length || 0) - 1 }} outros)
-                            </span>
+                            <ng-container *ngIf="formGroup.get('idsAcabamentos')?.value?.length">
+                                {{ getSelectedAcabamentosNames()[0] || 'Nenhum selecionado' }}
+                                <span *ngIf="getSelectedAcabamentosNames().length > 1">
+                                    (+{{ getSelectedAcabamentosNames().length - 1 }} outros)
+                                </span>
+                            </ng-container>
+                            <ng-container *ngIf="!(formGroup.get('idsAcabamentos')?.value?.length)">
+                                Nenhum selecionado
+                            </ng-container>
                         </mat-select-trigger>
-                        <mat-option *ngFor="let acabamento of acabamentos" [value]="acabamento">
+                        <mat-option *ngFor="let acabamento of acabamentos" [value]="acabamento.id">
                             {{ acabamento.nome }}
                         </mat-option>
                     </mat-select>
@@ -215,7 +220,7 @@
 
                         <mat-card-title class="centered-text"> {{inputNome.value}} </mat-card-title>
 
-                        <mat-card-content class="centered-text"> {{selectTipo.value.label}} </mat-card-content>
+                        <mat-card-content class="centered-text"> {{selectTipoArma.value}} </mat-card-content>
                         <br />
                         <mat-card-content class="centered-text"> {{inputPreco.value}} </mat-card-content>
 

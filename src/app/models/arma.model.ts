@@ -7,7 +7,7 @@ export class Arma {
     qtdNoEstoque!: number;
     preco!: number;
     descricao!: string;
-    tipo!: TipoArma;
+    tipoArma!: TipoArma;
     marca!: string;
     idsAcabamentos!: Acabamento[]; //array de id
     calibre!: string;
