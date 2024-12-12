@@ -121,6 +121,10 @@ export class FuncionarioFormComponent implements OnInit{
     }
   }
 
+  cancelar(){
+    this.router.navigateByUrl('/admin/estados');
+  }
+
   getErrorMessage(controlName: string, errors: ValidationErrors | null | undefined): string {
     if (!errors) {
       return '';

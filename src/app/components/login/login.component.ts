@@ -55,6 +55,7 @@ export class LoginComponent implements OnInit {
 
     }
   }
+  
 
   onRegister() {
     // criar usuário

@@ -114,6 +114,10 @@ export class UsuarioFormComponent {
     
   }
 
+  cancelar(){
+    this.router.navigateByUrl('/admin/usuarios');
+  }
+
   excluir() {
     if (this.formGroup.valid) {
       const usuario = this.formGroup.value;

@@ -74,6 +74,10 @@ export class EnderecoFormComponent {
     }
   }
 
+  cancelar(){
+    this.router.navigateByUrl('/admin/estados');
+  }
+
   
   salvar() {
     if (this.formGroup.valid) {

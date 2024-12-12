@@ -65,7 +65,6 @@ export class ArmaListComponent implements OnInit {
   }
 
 
-
   excluir(arma: Arma): void {
     if (arma.id != null) {
       this.armaService.delete(arma).subscribe({

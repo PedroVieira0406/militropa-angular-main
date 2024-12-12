@@ -211,6 +211,10 @@ export class ArmaFormComponent implements OnInit {
     });
   }
 
+  cancelar(){
+    this.router.navigateByUrl('/admin/armas');
+  }
+
   tratarErros(errorResponse: HttpErrorResponse) {
 
     if (errorResponse.status === 400) {

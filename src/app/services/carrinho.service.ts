@@ -11,7 +11,7 @@ export class CarrinhoService {
   private carrinhoSubject = new BehaviorSubject<ItemCarrinho[]>([]);
   carrinho$ = this.carrinhoSubject.asObservable();
 
-  constructor(private localStorageService: LocalStorageService) { 
+  constructor(private localStorageService: LocalStorageService) {
     // verificando se tem dados no carrinho no local storage e atualiza o subject
     const carrinhoArmazenado = localStorageService.getItem('carrinho') || [];
     this.carrinhoSubject.next(carrinhoArmazenado);
@@ -20,37 +20,36 @@ export class CarrinhoService {
   adicionar(itemCarrinho: ItemCarrinho): void {
     const carrinhoAtual = this.carrinhoSubject.value;
     const itemExistente = carrinhoAtual.find(item => item.id === itemCarrinho.id);
-
-    if (itemExistente) {
+  
+    if(itemExistente){
       itemExistente.quantidade += itemCarrinho.quantidade || 1;
     } else {
       carrinhoAtual.push(itemCarrinho);
     }
-
     this.carrinhoSubject.next(carrinhoAtual);
+    // lembrar de fazer a atualização local
     this.atualizarArmazenamentoLocal();
   }
 
-  removerTudo(): void {
+  removerTudo(): void{
     this.localStorageService.removeItem('carrinho');
-    // window.location.reload(); // reload na pagina
+    //window.location.reload(); //reload na pag
   }
 
-  removerItem(itemCarrinho: ItemCarrinho): void {
+  removerItem(itemCarrinho: ItemCarrinho): void{
     const carrinhoAtual = this.carrinhoSubject.value;
     const carrinhoAtualizado = carrinhoAtual.filter(item => item.id !== itemCarrinho.id);
-
+    
     this.carrinhoSubject.next(carrinhoAtualizado);
+    //lembrar de fazer a atualização local
     this.atualizarArmazenamentoLocal();
   }
 
-  obter() : ItemCarrinho[] {
+  obter(): ItemCarrinho[] {
     return this.carrinhoSubject.value;
   }
 
-  private atualizarArmazenamentoLocal(): void {
+  private atualizarArmazenamentoLocal(): void{
     this.localStorageService.setItem('carrinho', this.carrinhoSubject.value);
   }
-
-
 }

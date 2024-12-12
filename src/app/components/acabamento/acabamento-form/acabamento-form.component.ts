@@ -129,6 +129,10 @@ export class AcabamentoFormComponent implements OnInit{
     return 'invalid field';
   }
 
+  cancelar(){
+    this.router.navigateByUrl('/admin/acabamentos');
+  }
+
   errorMensages: { [controlName: string]: { [errorName: string]: string } } = {
     nome: {
         required: 'Nome é obrigatório',
