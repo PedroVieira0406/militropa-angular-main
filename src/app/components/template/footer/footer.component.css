@@ -1,16 +1,29 @@
-.footer-title {
-    flex: 1;
-    text-align: center;
-    font-size: small;
-    
-}
-
 .footer {
     background-color: #1e1e1e;
     color: #cccccc;
     text-align: center;
-    padding: 10px 0;
+    padding: 10px 20px; /* Adiciona padding horizontal */
     border-top: 1px solid #333;
     position: relative;
     width: 100%;
+    box-sizing: border-box; /* Garante que padding não afete o tamanho total */
+}
+
+.footer-title { 
+    flex: 1;
+    text-align: center;
+    font-size: small;
+    line-height: 1.5; /* Melhor espaçamento entre linhas */
+    word-wrap: break-word; /* Quebra palavras longas automaticamente */
+    white-space: normal; /* Permite que o texto quebre em várias linhas */
+    margin: 0 auto; /* Centraliza o texto */
+    max-width: 100%; /* Garante que o texto não ultrapasse os limites */
+}
+
+/* Adiciona ajuste de layout para telas pequenas */
+@media screen and (max-width: 480px) {
+    .footer-title {
+        display: block; /* Garante que o texto ocupe a largura inteira */
+        text-align: center; /* Centraliza o texto em telas pequenas */
+    }
 }

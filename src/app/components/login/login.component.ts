@@ -44,7 +44,8 @@ export class LoginComponent implements OnInit {
       this.authService.loginADM(login, senha).subscribe ({
         next: (resp) => {
           // redirecionando para a pagina principal
-          this.router.navigateByUrl('/admin');
+          this.showSnackbarTopPosition("Login realizado com sucesso");
+          this.router.navigateByUrl('/admin/armas');
         },
         error: (err) => {
           console.log(err);
