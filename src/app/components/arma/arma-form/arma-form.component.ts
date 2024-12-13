@@ -55,7 +55,7 @@ export class ArmaFormComponent implements OnInit {
       descricao: ['', Validators.required],
       tipoArma: [null, Validators.required],
       marca: ['', Validators.required],
-      idsAcabamentos: [null , Validators.required],
+      idsAcabamentos: [null, Validators.required],
       calibre: ['', Validators.required],
       comprimentoDoCano: ['', Validators.required],
       capacidadeDeTiro: ['', Validators.required],
@@ -114,6 +114,11 @@ export class ArmaFormComponent implements OnInit {
 
   salvar() {
     this.formGroup.markAllAsTouched();
+    // Verificar se uma imagem foi selecionada
+    if (!this.selectedFile && !this.imagePreview) {
+      this.snackBar.open('A imagem é obrigatória. Por favor, selecione uma imagem.', 'Fechar', { duration: 3000 });
+      return;
+    }
     if (this.formGroup.valid) {
       const arma = this.formGroup.value;
       const operacao = arma.id == null
@@ -122,9 +127,9 @@ export class ArmaFormComponent implements OnInit {
 
       operacao.subscribe({
         next: (armaCadastrado) => {
-          if(arma && arma.id){
+          if (arma && arma.id) {
             this.uploadImage(arma.id);
-          } else if (armaCadastrado && armaCadastrado.id){
+          } else if (armaCadastrado && armaCadastrado.id) {
             this.uploadImage(armaCadastrado.id);
           }
           this.router.navigateByUrl('/admin/armas');
@@ -137,8 +142,8 @@ export class ArmaFormComponent implements OnInit {
         }
       });
       console.log(arma);
-    }
-  }
+    }
+  }
 
   getSelectedAcabamentosNames(): string[] {
     const selectedIds: number[] = this.formGroup.get('idsAcabamentos')?.value || [];
@@ -153,8 +158,15 @@ export class ArmaFormComponent implements OnInit {
 
   carregarImagemSelecionada(event: any) {
     this.selectedFile = event.target.files[0];
-
     if (this.selectedFile) {
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+      if (!allowedTypes.includes(this.selectedFile.type)) {
+        this.snackBar.open('Apenas imagens nos formatos JPG, JPEG ou PNG são permitidas.', 'Fechar', { duration: 3000 });
+        this.selectedFile = null;
+        this.fileName = '';
+        this.imagePreview = null;
+        return;
+      }
       this.fileName = this.selectedFile.name;
       // carregando image preview
       const reader = new FileReader();
@@ -167,16 +179,15 @@ export class ArmaFormComponent implements OnInit {
   private uploadImage(armaId: number) {
     if (this.selectedFile) {
       this.armaService.uploadImage(armaId, this.selectedFile.name, this.selectedFile)
-      .subscribe({
-        next: () => {
-          console.log('voltarpagina1');
-          this.voltarPagina();
-        },
-        error: err => {
-          console.log('Erro ao fazer o upload da imagem');
-          // tratar o erro
-        }
-      })
+        .subscribe({
+          next: () => {
+            console.log('Imagem salva com sucesso');
+          },
+          error: err => {
+            console.log('Erro ao fazer o upload da imagem');
+            // tratar o erro
+          }
+        })
     } else {
       console.log('voltarpagina2');
       this.voltarPagina();
@@ -211,7 +222,7 @@ export class ArmaFormComponent implements OnInit {
     });
   }
 
-  cancelar(){
+  cancelar() {
     this.router.navigateByUrl('/admin/armas');
   }
 
@@ -251,62 +262,68 @@ export class ArmaFormComponent implements OnInit {
   errorMensages: { [controlName: string]: { [errorName: string]: string } } = {
     nome: {
       required: 'Nome é obrigatório',
+      maxlength: 'Nome deve ter no máximo 60 caracteres',
       apiError: '',
     },
     qtdNoEstoque: {
       required: 'Quantidade de estoque é obrigatória',
+      maxlength: 'Quandidae de estoque deve ter no máximo 6 caracteres',
       apiError: '',
     },
     descricao: {
       required: 'Descrição é obrigatória',
+      maxlength: 'Descrição deve ter no máximo 60 caracteres',
       apiError: '',
     },
     preco: {
+      maxlength: 'Preço deve ter no máximo 15 caracteres',
       required: 'Preço é obrigatório',
       apiError: '',
     },
     tipoArma: {
-      required: 'Tipo de disparo é obrigatório',
-      apiError: '',
+      required: 'Tipo de arma é obrigatório',
+      apiError: ''
     },
     marca: {
-      required: 'marca é obrigatória',
-      apiError: '',
-    },
-    senha: {
-      required: 'Senha é obrigatória',
-      minLength: 'O tamanho mínimo da senha é 5 dígitos.',
-      apiError: '',
-    },
-    acabamento: {
-      required: 'Acabamento é obrigatório',
-      apiError: '',
+      required: 'Marca é obrigatória',
+      maxlength: 'Marca deve ter no máximo 60 caracteres',
+      apiError: ''
     },
     calibre: {
-      required: 'calibre é obrigatório',
-      apiError: '',
+      required: 'Calibre é obrigatório',
+      apiError: ''
     },
     comprimentoDoCano: {
-      required: 'Comprimento Do Cano é obrigatória',
-      apiError: '',
+      required: 'Comprimento do cano é obrigatório',
+      maxlength: 'Comprimento do cano deve ter no máximo 60 caracteres',
+      apiError: ''
     },
     capacidadeDeTiro: {
       required: 'Capacidade de tiro é obrigatória',
-      apiError: '',
+      min: 'Capacidade de tiro deve ser maior que 0',
+      apiError: ''
     },
     numeroSigma: {
-      required: 'numero Sigma é obrigatório',
-      apiError: '',
+      required: 'Número Sigma é obrigatório',
+      maxlength: 'Número Sigma deve ter no máximo 60 caracteres',
+      apiError: ''
     },
     numeroDaArma: {
-      required: 'Numero da arma é obrigatório',
-      apiError: '',
+      required: 'Número da arma é obrigatório',
+      apiError: ''
     },
-
+    modelo: {
+      required: 'Modelo é obrigatório',
+      maxlength: 'Modelo deve ter no máximo 60 caracteres',
+      apiError: ''
+    },
     rna: {
-      required: 'rna é obrigatória',
-      apiError: '',
+      required: 'Registro Nacional de Armas (RNA) é obrigatório',
+      apiError: ''
     },
-
-  };
+    idAcabamento: {
+      required: 'Acabamento é obrigatório',
+      apiError: ''
+    },
+  }
 }
