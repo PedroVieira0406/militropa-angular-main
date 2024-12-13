@@ -46,8 +46,8 @@ export class UsuarioFormComponent {
     private dialog: MatDialog) {
       this.formGroup = this.formBuilder.group({
         id:[null],
-        login: ['', Validators.required],
-        senha: ['', Validators.required],
+        login: ['', [Validators.required, Validators.maxLength(60)]],
+        senha: ['', [Validators.required,  Validators.maxLength(20), Validators.minLength(5)]],
         perfil: ['', Validators.required]
       })
   }
@@ -68,27 +68,6 @@ export class UsuarioFormComponent {
     });
   }
   
-  tratarErros(errorResponse: HttpErrorResponse) {
-
-    if (errorResponse.status === 400) {
-      if (errorResponse.error?.errors) {
-        errorResponse.error.errors.forEach((validationError: any) => {
-          const formControl = this.formGroup.get(validationError.fieldName);
-
-          if (formControl) {
-            formControl.setErrors({apiError: validationError.message})
-          }
-
-        });
-      }
-    } else if (errorResponse.status < 400){
-      alert(errorResponse.error?.message || 'Erro genérico do envio do formulário.');
-    } else if (errorResponse.status >= 500) {
-      alert('Erro interno do servidor.');
-    }
-
-  }
-
   salvar() {
     this.formGroup.markAllAsTouched();
     if (this.formGroup.valid) {
@@ -134,6 +113,28 @@ export class UsuarioFormComponent {
     }
   }
 
+  tratarErros(errorResponse: HttpErrorResponse) {
+
+    if (errorResponse.status === 400) {
+      if (errorResponse.error?.errors) {
+        errorResponse.error.errors.forEach((validationError: any) => {
+          const formControl = this.formGroup.get(validationError.fieldName);
+
+          if (formControl) {
+            formControl.setErrors({apiError: validationError.message})
+          }
+
+        });
+      }
+    } else if (errorResponse.status < 400){
+      alert(errorResponse.error?.message || 'Erro genérico do envio do formulário.');
+    } else if (errorResponse.status >= 500) {
+      alert('Erro interno do servidor.');
+    }
+
+  }
+
+
   getErrorMessage(controlName: string, errors: ValidationErrors | null | undefined): string {
     if (!errors) {
       return '';
@@ -149,18 +150,20 @@ export class UsuarioFormComponent {
 
   errorMensages: { [controlName: string]: { [errorName: string]: string } } = {
     login: {
-        required: 'Login é obrigatório',
-        loginTaken: 'Este login já está em uso.',
-        apiError: '',
+      required: 'Login é obrigatório',
+      loginTaken: 'Este login já está em uso.',
+      maxLength:'O tamanho máximo do login é 60 dígitos',
+      apiError: '',
     },
     senha: {
-        required: 'Senha é obrigatória',
-        minLength: 'O tamanho mínimo da senha é 5 dígitos.',
-        apiError: '',
+      required: 'Senha é obrigatória',
+      minLength: 'O tamanho mínimo da senha é 5 dígitos.',
+      maxLength:'O tamanho máximo da senha é 20 dígitos',
+      apiError: '',
     },
     descricao: {
-        required: 'Perfil é obrigatório',
-        apiError: '',
+      required: 'Perfil é obrigatório',
+      apiError: '',
     },
 };
 }
