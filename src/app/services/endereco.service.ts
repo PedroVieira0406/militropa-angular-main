@@ -44,8 +44,8 @@ export class EnderecoService {
     return this.httpClient.put<any>(`${this.baseUrl}/${endereco.id}`, endereco);
   }
 
-  delete(id: number): Observable<any>{
-    return this.httpClient.delete<any>(`${this.baseUrl}/${id}`);
+  delete(endereco: Endereco): Observable<any>{
+    return this.httpClient.delete<any>(`${this.baseUrl}/${endereco.id}`); 
   }
 
 }
