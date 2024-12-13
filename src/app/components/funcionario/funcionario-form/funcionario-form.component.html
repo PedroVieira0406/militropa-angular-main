@@ -12,21 +12,21 @@
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('nome')?.hasError('apiError')) {
-                            <span>{{formGroup.get('nome')?.getError('apiError')}}</span>
+                        <span>{{formGroup.get('nome')?.getError('apiError')}}</span>
                         }
                     </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="full-width-input">
-                    <mat-label>Cpf</mat-label>
-                    <input matInput type="text" formControlName="cpf">
+                    <mat-label>CPF</mat-label>
+                    <input matInput type="text" formControlName="cpf" placeholder="000.000.000-00" (input)="formatCpf()">
                     <mat-error *ngIf="formGroup.get('cpf')?.invalid && formGroup.get('cpf')?.touched">
                         <!-- erros do front-end -->
                         {{getErrorMessage('cpf', formGroup.get('cpf')?.errors)}}
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('cpf')?.hasError('apiError')) {
-                            <span>{{formGroup.get('cpf')?.getError('apiError')}}</span>
+                        <span>{{formGroup.get('cpf')?.getError('apiError')}}</span>
                         }
                     </mat-error>
                 </mat-form-field>
@@ -40,33 +40,31 @@
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('email')?.hasError('apiError')) {
-                            <span>{{formGroup.get('email')?.getError('apiError')}}</span>
+                        <span>{{formGroup.get('email')?.getError('apiError')}}</span>
                         }
                     </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>Telefone</mat-label>
-                    <input matInput type="text" formControlName="telefone">
+                    <input matInput type="text" formControlName="telefone" placeholder="(99) 99999-9999" (input)="formatTelefone()">
                     <mat-error *ngIf="formGroup.get('telefone')?.invalid && formGroup.get('telefone')?.touched">
                         <!-- erros do front-end -->
                         {{getErrorMessage('telefone', formGroup.get('telefone')?.errors)}}
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('telefone')?.hasError('apiError')) {
-                            <span>{{formGroup.get('telefone')?.getError('apiError')}}</span>
+                        <span>{{formGroup.get('telefone')?.getError('apiError')}}</span>
                         }
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>Endereço</mat-label>
                     <mat-select formControlName="endereco">
-                        @for (endereco of enderecos; track endereco.id) {
-                        <mat-option [value]="endereco">
-                            {{endereco.nome}}
+                        <mat-option *ngFor="let endereco of enderecos" [value]="endereco.id">
+                            {{ endereco.nome }}
                         </mat-option>
-                        }
                     </mat-select>
                 </mat-form-field>
 
@@ -80,16 +78,16 @@
 
                         <!-- erros do back-end -->
                         @if(formGroup.get('senmatriculaa')?.hasError('apiError')) {
-                            <span>{{formGroup.get('matricula')?.getError('apiError')}}</span>
+                        <span>{{formGroup.get('matricula')?.getError('apiError')}}</span>
                         }
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="fill" class >
+                <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>Usuario</mat-label>
                     <mat-select formControlName="usuario">
                         @for (usuario of usuarios; track usuario.id) {
-                        <mat-option [value]="usuario">
+                        <mat-option [value]="usuario.id">
                             {{usuario.login}}
                         </mat-option>
                         }
@@ -109,7 +107,7 @@
                 Excluir
             </button>
 
-            <button mat-raised-button color="primary" (click)="salvar()" >
+            <button mat-raised-button color="primary" (click)="salvar()">
                 Salvar
             </button>
 
