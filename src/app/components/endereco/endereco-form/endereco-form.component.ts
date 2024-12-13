@@ -41,7 +41,11 @@ export class EnderecoFormComponent {
         cep: ['', Validators.required],
         cidade: ['', Validators.required],
         estado: ['', Validators.required]
-      }) 
+      })
+  }
+
+  ngOnInit(): void {
+    this.initializeForm();
   }
 
   initializeForm(): void{
@@ -63,20 +67,6 @@ export class EnderecoFormComponent {
     });
   }
 
-  onSubmit() {
-    if (this.formGroup.valid) {
-      const novoEndereco = this.formGroup.value;
-      this.enderecoService.insert(novoEndereco).subscribe({
-        next: (enderecoCadastrado) => {
-          this.router.navigateByUrl('/enderecos');
-        },
-        error: (err) => {
-          console.log('Erro ao salvar', + JSON.stringify(err));
-        }
-      })
-    }
-  }
-
   cancelar(){
     this.router.navigateByUrl('/admin/enderecos');
   }
@@ -89,8 +79,6 @@ export class EnderecoFormComponent {
     });
   }
 
-
-  
   salvar() {
     this.formGroup.markAllAsTouched();
     if (this.formGroup.valid) {

@@ -8,6 +8,7 @@ import { Cliente } from '../models/cliente.model';
 })
 export class ClienteService {
   private baseUrl = 'http://localhost:8080/clientes';
+  private cadastroUrl= 'http://localhost:8080/cadastro';
 
   constructor(private httpClient: HttpClient) {
   }
@@ -25,27 +26,27 @@ export class ClienteService {
 
     console.log(params);
 
-    return this.httpClient.get<Cliente[]>(this.baseUrl, {params}); 
+    return this.httpClient.get<Cliente[]>(this.baseUrl, {params});
   }
 
   findById(id: string): Observable<Cliente> {
-    return this.httpClient.get<Cliente>(`${this.baseUrl}/${id}`); 
+    return this.httpClient.get<Cliente>(`${this.baseUrl}/${id}`);
   }
 
   insert(cliente: Cliente): Observable<Cliente> {
-    return this.httpClient.post<Cliente>(this.baseUrl, cliente);
+    return this.httpClient.post<Cliente>(this.cadastroUrl, cliente);
   }
 
   update(cliente: Cliente): Observable<Cliente> {
-    return this.httpClient.put<any>(`${this.baseUrl}/${cliente.id}`, cliente); 
+    return this.httpClient.put<any>(`${this.baseUrl}/${cliente.id}`, cliente);
   }
 
   delete(cliente: Cliente): Observable<any>{
-    return this.httpClient.delete<any>(`${this.baseUrl}/${cliente.id}`); 
+    return this.httpClient.delete<any>(`${this.baseUrl}/${cliente.id}`);
   }
 
   count(): Observable<number> {
-    return this.httpClient.get<number>(`${this.baseUrl}/count`); 
+    return this.httpClient.get<number>(`${this.baseUrl}/count`);
   }
 
 }
