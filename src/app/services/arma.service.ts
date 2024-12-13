@@ -46,20 +46,10 @@ export class ArmaService {
   }
 
   insert(arma: Arma): Observable<Arma>{
-/*    const data = {
-      nome: arma.nome,
-      idEstado: arma..id
-    };
-*/    
     return this.httpClient.post<Arma>(this.baseUrl, arma);
   }
 
   update(arma: Arma): Observable<Arma>{
-/*    const data = {
-      nome: arma.nome,
-      idEstado: arma.estado.id
-    };
-*/
     return this.httpClient.put<Arma>(`${this.baseUrl}/${arma.id}`, arma);
   }
 
