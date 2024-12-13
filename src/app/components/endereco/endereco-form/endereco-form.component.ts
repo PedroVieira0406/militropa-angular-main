@@ -29,45 +29,45 @@ export class EnderecoFormComponent {
   constructor(private formBuilder: FormBuilder,
     private enderecoService: EnderecoService,
     private router: Router,
-        private snackBar: MatSnackBar,
+    private snackBar: MatSnackBar,
     private activatedRoute: ActivatedRoute) {
-      this.formGroup = this.formBuilder.group({
-        id:[null],
-        nome:['', Validators.required],
-        logradouro: ['', Validators.required],
-        numero: ['', Validators.required],
-        complemento: ['', Validators.required],
-        bairro: ['', Validators.required],
-        cep: ['', Validators.required],
-        cidade: ['', Validators.required],
-        estado: ['', Validators.required]
-      })
+    this.formGroup = this.formBuilder.group({
+      id: [null],
+      nome: ['', [Validators.required, Validators.maxLength(60)]],
+      logradouro: ['', [Validators.required, Validators.maxLength(60)]],
+      numero: ['', [Validators.required, Validators.maxLength(5)]],
+      complemento: ['', [Validators.required, Validators.maxLength(50)]],
+      bairro: ['', [Validators.required, Validators.maxLength(120)]],
+      cep: ['', [Validators.required, Validators.maxLength(9)]],
+      cidade: ['', [Validators.required, Validators.maxLength(60)]],
+      estado: ['', [Validators.required, Validators.maxLength(60)]]
+    })
   }
 
   ngOnInit(): void {
     this.initializeForm();
   }
 
-  initializeForm(): void{
+  initializeForm(): void {
     const endereco: Endereco = this.activatedRoute.snapshot.data['endereco'];
 
     //selecionando o estasdo
-//    const estado = this.enderecos.find(estado => estado.id === (municipio?.estado?.id || null));
+    //    const estado = this.enderecos.find(estado => estado.id === (municipio?.estado?.id || null));
 
-    this.formGroup = this.formBuilder.group({
-      id:[(endereco && endereco.id) ? endereco.id : null],
-      nome: [(endereco && endereco.nome) ? endereco.nome : '', Validators.required],
-      logradouro: [(endereco && endereco.logradouro) ? endereco.logradouro : '', Validators.required],
-      numero: [(endereco && endereco.numero) ? endereco.numero : '', Validators.required],
-      complemento: [(endereco && endereco.complemento) ? endereco.complemento : '', Validators.required],
-      bairro: [(endereco && endereco.bairro) ? endereco.bairro : '', Validators.required],
-      cep: [(endereco && endereco.cep) ? endereco.cep : '', Validators.required],
-      cidade: [(endereco && endereco.cidade) ? endereco.cidade : '', Validators.required],
-      estado: [(endereco && endereco.estado) ? endereco.estado : '', Validators.required]
+    this.formGroup.patchValue({
+      id: endereco?.id || null,
+      nome: endereco?.nome || '',
+      logradouro: endereco?.logradouro || '',
+      numero: endereco?.numero || '',
+      complemento: endereco?.complemento || '',
+      bairro: endereco?.bairro || '',
+      cep: endereco?.cep || '',
+      cidade: endereco?.cidade || '',
+      estado: endereco?.estado || ''
     });
   }
 
-  cancelar(){
+  cancelar() {
     this.router.navigateByUrl('/admin/enderecos');
   }
 
@@ -79,37 +79,59 @@ export class EnderecoFormComponent {
     });
   }
 
-  salvar() {
+  salvar(): void {
     this.formGroup.markAllAsTouched();
     if (this.formGroup.valid) {
       const endereco = this.formGroup.value;
-
-      const operacao = endereco.id == null
-        ? this.enderecoService.insert(endereco)
-        : this.enderecoService.update(endereco);
+      const operacao = endereco.id
+        ? this.enderecoService.update(endereco)
+        : this.enderecoService.insert(endereco);
 
       operacao.subscribe({
         next: () => this.router.navigateByUrl('/admin/enderecos'),
-        error: (error) => {
-          console.log('Erro ao Salvar' + JSON.stringify(error));
-          this.tratarErros(error);
-        }
+        error: (error) => this.tratarErros(error)
       });
+    } else {
+      this.showSnackbarTopPosition('Preencha todos os campos obrigatórios.');
     }
   }
-excluir() {
+  excluir() {
     if (this.formGroup.valid) {
-      const endereco = this.formGroup.value;
-      if (endereco.id != null) {
-        this.enderecoService.delete(endereco).subscribe({
+      const id = this.formGroup.get('id')?.value;
+      if (id) {
+        this.enderecoService.delete(id).subscribe({
           next: () => this.router.navigateByUrl('/admin/enderecos'),
           error: (err) => {
-            console.log('Erro ao Excluir' + JSON.stringify(err));
+            console.error('Erro ao excluir:', err);
           }
         });
+      } else {
+        console.error('ID do endereço não encontrado ou inválido.');
       }
     }
   }
+
+  tratarErros(errorResponse: HttpErrorResponse) {
+
+    if (errorResponse.status === 400) {
+      if (errorResponse.error?.errors) {
+        errorResponse.error.errors.forEach((validationError: any) => {
+          const formControl = this.formGroup.get(validationError.fieldName);
+
+          if (formControl) {
+            formControl.setErrors({ apiError: validationError.message })
+          }
+
+        });
+      }
+    } else if (errorResponse.status < 400) {
+      alert(errorResponse.error?.message || 'Erro genérico do envio do formulário.');
+    } else if (errorResponse.status >= 500) {
+      alert('Erro interno do servidor.');
+    }
+
+  }
+
 
   getErrorMessage(controlName: string, errors: ValidationErrors | null | undefined): string {
     if (!errors) {
@@ -120,52 +142,50 @@ excluir() {
         return this.errorMessages[controlName][errorName];
       }
     }
-    return 'Campo inválido';
-  }
 
-  tratarErros(errorResponse: HttpErrorResponse) {
-    if (errorResponse.status === 400 && errorResponse.error?.errors) {
-      errorResponse.error.errors.forEach((validationError: any) => {
-        const formControl = this.formGroup.get(validationError.fieldName);
-        if (formControl) {
-          formControl.setErrors({ apiError: validationError.message });
-        }
-      });
-    } else if (errorResponse.status >= 500) {
-      alert('Erro interno do servidor.');
-    } else {
-      alert(errorResponse.error?.message || 'Erro genérico ao enviar o formulário.');
-    }
+    return 'invalid field';
   }
 
   errorMessages: { [controlName: string]: { [errorName: string]: string } } = {
     nome: {
-      required: 'NOME é obrigatório',
-      apiError: ' '
+      required: 'Nome é obrigatório',
+      maxlength: 'Nome deve ter no máximo 60 caracteres',
+      apiError: ''
     },
     logradouro: {
       required: 'Logradouro é obrigatório',
-      apiError: ' '
+      maxlength: 'Logradouro deve ter no máximo 60 caracteres',
+      apiError: ''
     },
     numero: {
-      required: 'Numero é obrigatório',
-      apiError: ' '
+      required: 'Número é obrigatório',
+      maxlength: 'Número deve ter no máximo 5 caracteres',
+      apiError: ''
+    },
+    complemento: {
+      required: 'Complemento é obrigatório',
+      maxlength: 'Complemento deve ter no máximo 50 caracteres',
+      apiError: ''
     },
     bairro: {
-      required: 'Bairro é obrigatória',
-      apiError: ' '
+      required: 'Bairro é obrigatório',
+      maxlength: 'Bairro deve ter no máximo 120 caracteres',
+      apiError: ''
     },
     cep: {
-      required: 'Cep é obrigatório',
-      apiError: ' '
+      required: 'CEP é obrigatório',
+      maxlength: 'CEP deve ter no máximo 9 caracteres',
+      apiError: ''
     },
     cidade: {
       required: 'Cidade é obrigatória',
-      apiError: ' '
+      maxlength: 'Cidade deve ter no máximo 60 caracteres',
+      apiError: ''
     },
     estado: {
       required: 'Estado é obrigatório',
-      apiError: ' '
-    },
-  }
+      maxlength: 'Estado deve ter no máximo 60 caracteres',
+      apiError: ''
+    }
+  };
 }

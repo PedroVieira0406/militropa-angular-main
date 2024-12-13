@@ -7,70 +7,112 @@
                 <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>Nome</mat-label>
                     <input matInput type="text" formControlName="nome">
-                    <mat-error *ngIf="formGroup.get('nome')
-                                    && formGroup.get('nome')?.invalid
-                                    && formGroup.get('nome')?.touched">
-                        O nome é obrigatorio.
+                    <mat-error *ngIf="formGroup.get('nome')?.invalid && formGroup.get('nome')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('nome', formGroup.get('nome')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('nome')?.hasError('apiError')) {
+                        <span>{{formGroup.get('nome')?.getError('apiError')}}</span>
+                        }
                     </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>Logradouro</mat-label>
                     <input matInput type="text" formControlName="logradouro">
-                    <mat-error *ngIf="formGroup.get('logradouro')
-                                    && formGroup.get('logradouro')?.invalid
-                                    && formGroup.get('logradouro')?.touched">
-                        O logradouro é obrigatorio.
+                    <mat-error *ngIf="formGroup.get('logradouro')?.invalid && formGroup.get('logradouro')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('logradouro', formGroup.get('logradouro')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('logradouro')?.hasError('apiError')) {
+                        <span>{{formGroup.get('logradouro')?.getError('apiError')}}</span>
+                        }
                     </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>Numero</mat-label>
                     <input matInput type="text" formControlName="numero">
-                    <mat-error *ngIf="formGroup.get('numero')
-                                    && formGroup.get('numero')?.invalid
-                                    && formGroup.get('numero')?.touched">
-                        O numero é obrigatorio.
+                    <mat-error *ngIf="formGroup.get('numero')?.invalid && formGroup.get('numero')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('numero', formGroup.get('numero')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('numero')?.hasError('apiError')) {
+                        <span>{{formGroup.get('numero')?.getError('apiError')}}</span>
+                        }
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="full-width-input">
+                    <mat-label>Complemento</mat-label>
+                    <input matInput type="text" formControlName="complemento">
+                    <mat-error *ngIf="formGroup.get('complemento')?.invalid && formGroup.get('complemento')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('complemento', formGroup.get('complemento')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('complemento')?.hasError('apiError')) {
+                        <span>{{formGroup.get('complemento')?.getError('apiError')}}</span>
+                        }
                     </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>Bairro</mat-label>
                     <input matInput type="text" formControlName="bairro">
-                    <mat-error *ngIf="formGroup.get('bairro')
-                                    && formGroup.get('bairro')?.invalid
-                                    && formGroup.get('bairro')?.touched">
-                        O bairro é obrigatorio.
+                    <mat-error *ngIf="formGroup.get('bairro')?.invalid && formGroup.get('bairro')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('bairro', formGroup.get('bairro')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('bairro')?.hasError('bairro')) {
+                        <span>{{formGroup.get('bairro')?.getError('bairro')}}</span>
+                        }
                     </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>CEP</mat-label>
                     <input matInput type="text" formControlName="cep">
-                    <mat-error *ngIf="formGroup.get('cep')
-                                    && formGroup.get('cep')?.invalid
-                                    && formGroup.get('cep')?.touched">
-                        O cep é obrigatorio.
+                    <mat-error *ngIf="formGroup.get('cep')?.invalid && formGroup.get('cep')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('cep', formGroup.get('cep')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('cep')?.hasError('apiError')) {
+                        <span>{{formGroup.get('cep')?.getError('apiError')}}</span>
+                        }
                     </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>Cidade</mat-label>
                     <input matInput type="text" formControlName="cidade">
-                    <mat-error *ngIf="formGroup.get('cidade')
-                                    && formGroup.get('cidade')?.invalid
-                                    && formGroup.get('cidade')?.touched">
-                        O cidade é obrigatorio.
+                    <mat-error *ngIf="formGroup.get('cidade')?.invalid && formGroup.get('cidade')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('cidade', formGroup.get('cidade')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('cidade')?.hasError('apiError')) {
+                        <span>{{formGroup.get('cidade')?.getError('apiError')}}</span>
+                        }
                     </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="full-width-input">
                     <mat-label>Estado</mat-label>
                     <input matInput type="text" formControlName="estado">
-                    <mat-error *ngIf="formGroup.get('estado')
-                                    && formGroup.get('estado')?.invalid
-                                    && formGroup.get('estado')?.touched">
-                        O estado é obrigatorio.
+                    <mat-error *ngIf="formGroup.get('estado')?.invalid && formGroup.get('estado')?.touched">
+                        <!-- erros do front-end -->
+                        {{getErrorMessage('estado', formGroup.get('estado')?.errors)}}
+
+                        <!-- erros do back-end -->
+                        @if(formGroup.get('estado')?.hasError('apiError')) {
+                        <span>{{formGroup.get('estado')?.getError('apiError')}}</span>
+                        }
                     </mat-error>
                 </mat-form-field>
             </form>

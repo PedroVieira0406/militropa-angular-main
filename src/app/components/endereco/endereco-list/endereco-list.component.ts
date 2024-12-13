@@ -30,8 +30,17 @@ export class EnderecoListComponent implements OnInit {
   ngOnInit(): void {
     this.enderecoService.findAll().subscribe(
       data => {
-      this.enderecos = data;
-    })
+        this.enderecos = data;
+      })
+  }
+
+  excluir(endereco: Endereco): void {
+    if (endereco.id != null) {
+      this.enderecoService.delete(endereco).subscribe({
+        next: () => this.ngOnInit(), // Recarrega os dados após exclusão
+        error: err => console.error('Erro ao excluir', err)
+      });
+    }
   }
 
 }
