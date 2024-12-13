@@ -44,13 +44,12 @@ export class FuncionarioFormComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private dialog: MatDialog) {
     this.formGroup = this.formBuilder.group({
-      id: [null],
-      nome: ['', Validators.required],
-      cpf: ['', [Validators.required, Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]],
-      email: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
+      nome: ['', [Validators.required, Validators.maxLength(60)]],
+      cpf: ['', [Validators.required, Validators.maxLength(20), Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(100), Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
       telefone: ['', [Validators.required, Validators.pattern(/^(\(?\d{2}\)?\s?)?(\d{4,5}-\d{4})$/)]],
       endereco: [null, Validators.required],
-      matricula: ['', Validators.required],
+      matricula: ['', [Validators.required, Validators.maxLength(10)]],
       usuario: [null, Validators.required]
     });
   }
@@ -71,15 +70,15 @@ export class FuncionarioFormComponent implements OnInit {
     const usuario = this.usuarios.find(u => u.id === (funcionario?.usuario?.id || null));
     const endereco = this.enderecos.find(e => e.id === (funcionario?.endereco?.id || null));
 
-    this.formGroup.patchValue({
-      id: funcionario?.id || null,
-      nome: funcionario?.nome || '',
-      cpf: funcionario?.cpf || '',
-      email: funcionario?.email || '',
-      telefone: funcionario?.telefone || '',
-      endereco: endereco || null,
-      matricula: funcionario?.matricula || '',
-      usuario: usuario || null
+    this.formGroup = this.formBuilder.group({
+      id:[(usuario && usuario.id) ? usuario.id : null],
+      nome: [(funcionario && funcionario.nome) ? funcionario.nome:'', [Validators.required, Validators.maxLength(60)]],
+      cpf: [(funcionario && funcionario.cpf) ? funcionario.cpf:'', [Validators.required, Validators.maxLength(20), Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]],
+      email: [(funcionario && funcionario.email) ? funcionario.email:'', [Validators.required, Validators.email, Validators.maxLength(100), Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
+      telefone: [(funcionario && funcionario.telefone) ? funcionario.telefone:'', [Validators.required, Validators.pattern(/^(\(?\d{2}\)?\s?)?(\d{4,5}-\d{4})$/)]],
+      endereco:[(endereco && endereco.id) ? endereco.id : null],
+      matricula: [(funcionario && funcionario.matricula) ? funcionario.matricula:'', [Validators.required, Validators.maxLength(10)]],
+      usuario:[(usuario && usuario.id) ? usuario.id : null]
     });
   }
 
@@ -91,7 +90,7 @@ export class FuncionarioFormComponent implements OnInit {
     });
   }
 
-  cancelar(){
+  cancelar() {
     this.router.navigateByUrl('/admin/funcionarios');
   }
 
@@ -182,24 +181,33 @@ export class FuncionarioFormComponent implements OnInit {
   }
 
   errorMessages: { [controlName: string]: { [errorName: string]: string } } = {
+    nome: {
+      required: 'Nome é obrigatório',
+      maxlength: 'Nome deve ter no máximo 60 caracteres',
+      apiError: ''
+    },
     cpf: {
       required: 'CPF é obrigatório',
-      pattern: 'O CPF deve estar no formato 000.000.000-00',
-      apiError: ' '
+      maxlength: 'CPF deve ter no máximo 20 caracteres',
+      pattern: 'CPF deve seguir o formato 000.000.000-00',
+      apiError: ''
     },
     email: {
-      required: 'Email é obrigatório',
-      pattern: 'O email deve ser válido',
-      apiError: ' '
+      required: 'E-mail é obrigatório',
+      email: 'E-mail deve ser válido',
+      maxlength: 'E-mail deve ter no máximo 100 caracteres',
+      pattern: 'E-mail deve ser válido',
+      apiError: ''
     },
     telefone: {
       required: 'Telefone é obrigatório',
-      pattern: 'O telefone deve estar no formato (99) 99999-9999 ou (99) 9999-9999',
-      apiError: ' '
+      pattern: 'Telefone deve seguir o formato (99) 9999-9999 ou (99) 8888-8888',
+      apiError: ''
     },
     matricula: {
       required: 'Matrícula é obrigatória',
-      apiError: ' '
+      maxlength: 'Matrícula deve ter no máximo 10 caracteres',
+      apiError: ''
     },
     usuario: {
       required: 'Usuário é obrigatório',
