@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbar } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Usuario } from '../../../models/usuario.model';
 import { AuthService } from '../../../services/auth.service';
@@ -22,8 +22,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(private sidebarService: SidebarService,
     private authService: AuthService,
+    private router: Router,
   ) {
 
+  }
+
+  armas(){
+    this.router.navigateByUrl('');
   }
 
   ngOnInit(): void {
