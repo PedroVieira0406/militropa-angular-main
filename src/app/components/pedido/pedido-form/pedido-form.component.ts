@@ -16,9 +16,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormaDePagamento } from '../../../models/formaDePagamanto.model';
+import { ItemPedido } from '../../../models/itemPedido.model';
 import { Pedido } from '../../../models/pedido.model';
 import { PedidoService } from '../../../services/pedido.service';
-import { ItemPedido } from '../../../models/itemPedido.model';
 
 @Component({
   selector: 'app-pedido-form',
@@ -70,9 +70,6 @@ export class PedidoFormComponent implements OnInit {
     this.pedidoService.findFormaDePagamento().subscribe(data => {
       this.formaDePagamentos = data;
     });
-    this.acabamentoService.findAll().subscribe(data => {
-      this.acabamentos = data;
-    })
     this.initializeForm();
   }
 
@@ -83,12 +80,11 @@ export class PedidoFormComponent implements OnInit {
 
     this.formGroup = this.formBuilder.group({
       id: [(pedido && pedido.id) ? pedido.id : null],
-      login: [(pedido && pedido.login) ? pedido.login : '', [Validators.required, Validators.maxLength(60)]],
       senha: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]],
       perfil: [(pedido && pedido.formaDePagamento) ? pedido.formaDePagamento : '', Validators.required],
     });
   }
-
+  /*
   salvar(): void {
     this.formGroup.markAllAsTouched();
 
@@ -110,7 +106,7 @@ export class PedidoFormComponent implements OnInit {
       });
     }
   }
-
+*/
   cancelar(): void {
     this.router.navigateByUrl('/admin/pedidos');
   }
