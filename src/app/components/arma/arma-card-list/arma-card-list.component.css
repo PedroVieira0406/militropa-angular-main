@@ -14,11 +14,43 @@ img {
     display: flex;
     align-items: center;
     width: 100%;
+    
+}
+
+.carrinho-button {
+    position: absolute;
+    right: 5%;
+    border: 3px;
+    border-color: black;
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-button {
+    position: absolute;
+    left: 5%;
+    border: 3px;
+    border-color: black;
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shopping-cart-icon {
+    color: rgb(255, 255, 255);
+    /* Cor do ícone */
+    font-size: 24px;
 }
 
 .container {
     padding: 20px;
     background-color: dimgray;
+    position: relative; /* Adicione isso */
 }
 
 .container {

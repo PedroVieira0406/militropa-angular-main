@@ -4,14 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardActions, MatCardContent, MatCardFooter, MatCardModule, MatCardTitle } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Arma } from '../../../models/arma.model';
 import { ArmaService } from '../../../services/arma.service';
 import { CarrinhoService } from '../../../services/carrinho.service';
@@ -37,7 +37,8 @@ type Card = {
     MatPaginatorModule,
     FormsModule,
     MatFormFieldModule,
-    MatInputModule],
+    MatInputModule,
+    MatIcon],
   templateUrl: './arma-card-list.component.html',
   styleUrl: './arma-card-list.component.css'
 })
@@ -52,7 +53,8 @@ export class ArmaCardListComponent implements OnInit {
 
   constructor(private armaService: ArmaService,
                       private carrinhoService: CarrinhoService,
-                      private snackBar: MatSnackBar) {
+                      private snackBar: MatSnackBar,
+                      private router:Router) {
 
   }
   ngOnInit(): void {
@@ -90,6 +92,14 @@ export class ArmaCardListComponent implements OnInit {
       preco: card.preco,
       quantidade: 1
     });
+  }
+
+  carrinhoDeCompras(){
+    this.router.navigateByUrl('/carrinho');
+  }
+
+  login(){
+    this.router.navigateByUrl('/login');
   }
 
   buscarArmas(): void {

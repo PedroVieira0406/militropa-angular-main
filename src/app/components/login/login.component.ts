@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { Location, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router,
+    private location: Location,
     private snackBar: MatSnackBar
   ) { }
 
@@ -45,7 +45,8 @@ export class LoginComponent implements OnInit {
         next: (resp) => {
           // redirecionando para a pagina principal
           this.showSnackbarTopPosition("Login realizado com sucesso");
-          this.router.navigateByUrl('/admin/armas');
+          this.location.back();  // Volta para a página anterior
+          
         },
         error: (err) => {
           console.log(err);

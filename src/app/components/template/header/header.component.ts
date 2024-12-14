@@ -21,7 +21,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
 
   constructor(private sidebarService: SidebarService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
 
   }
@@ -43,5 +43,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   deslogar(){
     this.authService.removeToken();
     this.authService.removeUsuarioLogado();
+    window.location.reload();
   }
 }

@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(to right, #6E45E2, #FF6636);
+    background: linear-gradient(90deg, #2AF598 0%, #009EFD 100%);
   }
   
   .login-box {
@@ -35,12 +35,12 @@
   .login-button {
     width: 100%;
     margin-top: 20px;
-    background: #FF6636;
+    background: #2AF598;
     color: #fff;
     transition: background 0.3s;
   }
   
   .login-button:hover {
-    background: #FF5722;
+    background: #009EFD;
   }
   

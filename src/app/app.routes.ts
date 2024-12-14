@@ -40,6 +40,7 @@ export const routes: Routes = [
             
             { path: 'ecommerce', component: ArmaCardListComponent, title: 'Lista de Cards de Armas' },
             { path: 'carrinho', component: CarrinhoComponent, title: 'Carrinho de Compras' },
+            { path: 'login', component: LoginComponent, title: 'Login'},
         ]
     },
     {
