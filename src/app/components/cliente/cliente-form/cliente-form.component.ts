@@ -6,7 +6,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -16,117 +15,132 @@ import { Cliente } from '../../../models/cliente.model';
 import { Endereco } from '../../../models/endereco.model';
 import { Usuario } from '../../../models/usuario.model';
 import { ClienteService } from '../../../services/cliente.service';
+import { EnderecoService } from '../../../services/endereco.service';
+import { UsuarioService } from '../../../services/usuario.service';
 
 @Component({
   selector: 'app-cliente-form',
   standalone: true,
   imports: [NgFor, NgIf, ReactiveFormsModule, MatFormFieldModule,
     MatInputModule, MatButtonModule, MatCardModule, MatToolbarModule,
-    RouterModule, MatSelectModule, MatIcon, MatStepperModule],
+    RouterModule, MatSelectModule, MatStepperModule],
   templateUrl: './cliente-form.component.html',
-  styleUrl: './cliente-form.component.css'
+  styleUrls: ['./cliente-form.component.css']
 })
-
 export class ClienteFormComponent {
   formGroup: FormGroup;
   usuarios: Usuario[] = [];
   enderecos: Endereco[] = [];
 
-
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    private formBuilder: FormBuilder,
     private clienteService: ClienteService,
+    private usuarioService: UsuarioService,
+    private enderecoService: EnderecoService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private dialog: MatDialog,) {
+    private dialog: MatDialog
+  ) {
     this.formGroup = this.formBuilder.group({
-      firstFormGroup: this.formBuilder.group({
-        id: [null],
-        nome: ['', Validators.required],
-        cpf: ['', Validators.required],
-        email: ['', Validators.required],
-        registro: ['', Validators.required],
-        telefones: this.formBuilder.array([]),
-        login: ['', Validators.required],
-        senha: ['', Validators.required],
-      }),
-      secondFormGroup: this.formBuilder.group({
-        enderecos: this.formBuilder.array([]),
-      }),
+      id: [null],
+      nome: ['', [Validators.required]],
+      cpf: ['', [Validators.required, Validators.pattern(/\d{3}\.\d{3}\.\d{3}-\d{2}/)]],
+      email: ['', [Validators.required, Validators.email]],
+      registro: ['', [Validators.required]],
+      telefones: [null, Validators.required],
+      enderecos: [null, Validators.required],
+      login: ['', [Validators.required]],
+      senha: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
-  get telefones(): FormArray {
-    return this.formGroup.get('firstFormGroup.telefones') as FormArray;
+
+
+  ngOnInit(): void {
+    this.usuarioService.findAll().subscribe((data) => {
+      this.usuarios = data;
+    });
+    this.enderecoService.findAll().subscribe((data) => {
+      this.enderecos = data;
+    });
+    this.initializeForm();
   }
 
-  get enderecosArray(): FormArray {
-    return this.formGroup.get('secondFormGroup.enderecos') as FormArray;
-  }
 
   initializeForm(): void {
     const cliente: Cliente = this.activatedRoute.snapshot.data['cliente'];
-
-    //selecionando o usuario
-    //const usuario = this.usuarios.find(usuario => usuario.id === (cliente?.usuario?.id || null));
 
     this.formGroup.patchValue({
       id: cliente?.id || null,
       nome: cliente?.nome || '',
       cpf: cliente?.cpf || '',
       email: cliente?.email || '',
+      telefones: '',
+      enderecos: '',
       registro: cliente?.registro || '',
       login: cliente?.usuario?.login || '',
+      senha: cliente?.usuario?.senha || '',
     });
 
 
-    // Inicializa os telefones
-    cliente?.telefones?.forEach((telefone) => this.adicionarTelefone(telefone));
-
-    // Inicializa os endereços
-    cliente?.enderecos?.forEach((endereco) => this.adicionarEndereco(endereco));
   }
 
-  // Adicionar um telefone ao FormArray
-  adicionarTelefone(telefone: string = ''): void {
-    this.telefones.push(
-      this.formBuilder.control(telefone, [Validators.required, Validators.minLength(10)])
-    );
+  createTelefoneGroup(telefone: string = ''): FormGroup {
+    return this.formBuilder.group({
+      numero: [telefone, [Validators.required, Validators.pattern(/\(\d{2}\) \d{4,5}-\d{4}/)]],
+    });
   }
 
-  // Remover um telefone pelo índice
-  removerTelefone(index: number): void {
-    this.telefones.removeAt(index);
+  createEnderecoGroup(endereco: Partial<Endereco> = {}): FormGroup {
+    return this.formBuilder.group({
+      nome: [endereco.nome || '', Validators.required],
+      logradouro: [endereco.logradouro || '', Validators.required],
+      numero: [endereco.numero || '', Validators.required],
+      complemento: [endereco.complemento || ''],
+      bairro: [endereco.bairro || '', Validators.required],
+      cep: [endereco.cep || '', [Validators.required, Validators.pattern(/\d{5}-\d{3}/)]],
+      cidade: [endereco.cidade || '', Validators.required],
+      estado: [endereco.estado || '', Validators.required],
+    });
   }
 
-  // Adicionar um endereço ao FormArray
-  adicionarEndereco(endereco: Partial<Endereco> = {}): void {
-    this.enderecosArray.push(
-      this.formBuilder.group({
-        nome: [endereco.nome || '', Validators.required],
-        logradouro: [endereco.logradouro || '', Validators.required],
-        numero: [endereco.numero || '', Validators.required],
-        complemento: [endereco.complemento || ''],
-        bairro: [endereco.bairro || '', Validators.required],
-        cep: [endereco.cep || '', Validators.required],
-        cidade: [endereco.cidade || '', Validators.required],
-        estado: [endereco.estado || '', Validators.required],
-      })
-    );
+  addTelefone(): void {
+    (this.formGroup.get('telefones') as FormArray).push(this.createTelefoneGroup());
   }
 
-  // Remover um endereço pelo índice
-  removerEndereco(index: number): void {
-    this.enderecosArray.removeAt(index);
+  removeTelefone(index: number): void {
+    (this.formGroup.get('telefones') as FormArray).removeAt(index);
   }
 
-  formatCpf() {
-    const cpfControl = this.formGroup.get('firstFormGroup.cpf');
+  addEndereco(): void {
+    (this.formGroup.get('enderecos') as FormArray).push(this.createEnderecoGroup());
+  }
+
+  removeEndereco(index: number): void {
+    (this.formGroup.get('enderecos') as FormArray).removeAt(index);
+  }
+
+  formatCpf(): void {
+    const cpfControl = this.formGroup.get('cpf');
     if (cpfControl && cpfControl.value) {
-      const formattedCpf = cpfControl.value.replace(/\D/g, '') // Remove não dígitos
-        .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+      const formattedCpf = cpfControl.value.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
       cpfControl.setValue(formattedCpf);
     }
   }
 
+  formatTelefone(): void {
+    const telefoneControl = this.formGroup.get('telefone');
+    if (telefoneControl) {
+      let telefone = telefoneControl.value.replace(/\D/g, '');
+      if (telefone.length <= 2) {
+        telefoneControl.setValue(telefone);
+      } else if (telefone.length <= 6) {
+        telefoneControl.setValue(telefone.replace(/(\d{2})(\d{0,4})/, '($1) $2'));
+      } else {
+        telefoneControl.setValue(telefone.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3'));
+      }
+    }
+  } 
+  
   cancelar() {
     this.router.navigateByUrl('/admin/clientes');
   }
