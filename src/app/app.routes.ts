@@ -5,6 +5,7 @@ import { acabamentoResolver } from './components/acabamento/resolver/acabamento.
 import { ArmaCardListComponent } from './components/arma/arma-card-list/arma-card-list.component';
 import { ArmaFormComponent } from './components/arma/arma-form/arma-form.component';
 import { ArmaListComponent } from './components/arma/arma-list/arma-list.component';
+import { InfoFormComponent } from './components/arma/info-form/info-form.component';
 import { armaResolver } from './components/arma/resolver/arma.resolver';
 import { CarrinhoComponent } from './components/carrinho/carrinho.component';
 import { ClienteFormComponent } from './components/cliente/cliente-form/cliente-form.component';
@@ -20,6 +21,7 @@ import { FuncionarioFormComponent } from './components/funcionario/funcionario-f
 import { FuncionarioListComponent } from './components/funcionario/funcionario-list/funcionario-list.component';
 import { funcionarioResolver } from './components/funcionario/resolver/funcionario.resolver';
 import { LoginComponent } from './components/login/login.component';
+import { LoginClienteComponent } from './components/loginCliente/login.component';
 import { MunicipioFormComponent } from './components/municipio/municipio-form/municipio-form.component';
 import { MunicipioListComponent } from './components/municipio/municipio-list/municipio-list.component';
 import { municipioResolver } from './components/municipio/resolver/municipio.resolver';
@@ -40,7 +42,8 @@ export const routes: Routes = [
             
             { path: 'ecommerce', component: ArmaCardListComponent, title: 'Lista de Cards de Armas' },
             { path: 'carrinho', component: CarrinhoComponent, title: 'Carrinho de Compras' },
-            { path: 'login', component: LoginComponent, title: 'Login'},
+            { path: 'login', component: LoginClienteComponent, title: 'Login'},
+            { path: 'info/:id', component: InfoFormComponent, title: 'Info'},
         ]
     },
     {
