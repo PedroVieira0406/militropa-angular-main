@@ -1,13 +1,14 @@
 import { Location, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -15,12 +16,19 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [NgIf, ReactiveFormsModule, MatFormFieldModule,
     MatInputModule, MatButtonModule, MatCardModule, MatToolbarModule,
-    RouterModule],
+    RouterModule, MatIconModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+
+  hide = signal(true);
+    clickEvent(event: MouseEvent) {
+      this.hide.set(!this.hide());
+      event.stopPropagation();
+    }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,6 +36,7 @@ export class LoginComponent implements OnInit {
     private location: Location,
     private snackBar: MatSnackBar
   ) { }
+
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -44,7 +53,7 @@ export class LoginComponent implements OnInit {
       this.authService.loginADM(login, senha).subscribe ({
         next: (resp) => {
           // redirecionando para a pagina principal
-          this.showSnackbarTopPosition("Login realizado com sucesso");
+          this.showSnackbarTopPosition("Login administrativo realizado com sucesso");
           this.location.back();  // Volta para a página anterior
           
         },

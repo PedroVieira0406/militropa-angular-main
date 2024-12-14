@@ -94,7 +94,6 @@ export class FuncionarioFormComponent implements OnInit {
     this.router.navigateByUrl('/admin/funcionarios');
   }
 
-
   formatCpf() {
     let cpf = this.formGroup.get('cpf')?.value.replace(/\D/g, ''); // Remove qualquer coisa que não seja número
     if (cpf.length <= 3) {

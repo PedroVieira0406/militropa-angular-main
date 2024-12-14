@@ -43,4 +43,23 @@
   .login-button:hover {
     background: #009EFD;
   }
+
+  .full-width-input {
+    width: 100%;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+  
+  button[mat-raised-button] {
+    min-width: 120px;
+  }
+  
+  button[mat-raised-button]:not(:last-child) {
+    margin-right: 1rem;
+  }
+  
   

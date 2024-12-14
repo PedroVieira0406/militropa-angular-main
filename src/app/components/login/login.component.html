@@ -4,12 +4,18 @@
         <h2 class="login-title">Bem-vindo</h2>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <mat-form-field class="login-input">
-                <input matInput placeholder="Login" formControlName="login" required>
+                <mat-label>Login</mat-label>
+                <input matInput formControlName="login" required>
                 <mat-error *ngIf="loginForm.get('login')!.hasError('required')" class="erro">O login é obrigatório</mat-error>
             </mat-form-field>
             <mat-form-field class="login-input">
-                <input matInput type="password" placeholder="Senha" formControlName="senha" required>
+                <mat-label>Senha</mat-label>
+                <input matInput [type]="hide() ? 'password' : 'text'" formControlName="senha" required />
                 <mat-error *ngIf="loginForm.get('senha')!.hasError('required')">A senha é obrigatória</mat-error>
+                <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hide()">
+                        <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
             </mat-form-field>
             <button mat-raised-button class="login-button" color="primary" type="submit">Login</button>
         </form>
