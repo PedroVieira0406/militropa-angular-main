@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { FormaDePagamento } from '../models/formaDePagamanto.model';
 import { Pedido } from '../models/pedido.model';
-import { ItemPedido } from '../models/itemPedido.model';
 
 @Injectable({
     providedIn: 'root',
@@ -12,40 +12,30 @@ export class PedidoService {
 
     constructor(private http: HttpClient) { }
 
-    /**
-     * Insere um novo pedido.
-     * @param pedido Pedido a ser inserido.
-     * @param idCliente ID do cliente associado ao pedido.
-     * @returns Observable com os dados do pedido criado.
-     */
-    insert(pedido: Pedido, idCliente: number): Observable<Pedido> {
-        return this.http.post<Pedido>(`${this.baseUrl}/cliente/${idCliente}`, pedido);
+    insert(pedido: Pedido): Observable<Pedido> {
+        return this.http.post<Pedido>(`${this.baseUrl}`, pedido);
     }
 
-    /**
-     * Busca um pedido pelo ID.
-     * @param id ID do pedido.
-     * @returns Observable com os dados do pedido.
-     */
-    findById(id: number): Observable<Pedido> {
+    findById(id: string): Observable<Pedido> {
         return this.http.get<Pedido>(`${this.baseUrl}/${id}`);
     }
 
-    /**
-     * Busca todos os pedidos com paginação.
-     * @param page Número da página.
-     * @param pageSize Tamanho da página.
-     * @returns Observable com a lista de pedidos.
-     */
-    findAll(page: number, pageSize: number): Observable<Pedido[]> {
-        return this.http.get<Pedido[]>(`${this.baseUrl}?page=${page}&pageSize=${pageSize}`);
+    findAll(page?: number, pageSize?: number): Observable<Pedido[]> {
+
+        let params = {};
+
+        if (page !== undefined && pageSize !== undefined) {
+            params = {
+                page: page.toString(),
+                pageSize: pageSize.toString()
+            }
+        }
+
+        console.log(params);
+
+        return this.http.get<Pedido[]>(this.baseUrl, { params });
     }
 
-    /**
-     * Busca todos os pedidos de um cliente específico.
-     * @param idCliente ID do cliente.
-     * @returns Observable com a lista de pedidos do cliente.
-     */
     findByCliente(idCliente: number): Observable<Pedido[]> {
         return this.http.get<Pedido[]>(`${this.baseUrl}/cliente/${idCliente}`);
     }
@@ -74,4 +64,13 @@ export class PedidoService {
     count(): Observable<number> {
         return this.http.get<number>(`${this.baseUrl}/count`);
     }
+
+    delete(pedido: Pedido): Observable<any> {
+        return this.http.delete<Pedido>(`${this.baseUrl}/${pedido.id}`);
+    }
+
+    findFormaDePagamento(): Observable<FormaDePagamento[]> {
+        return this.http.get<FormaDePagamento[]>(`${this.baseUrl}/formaPagamento`);
+    }
+
 }
