@@ -1,1 +1,25 @@
-<p>info-form works!</p>
+<div class="container">
+    <mat-card *ngIf="arma" class="arma-info">
+        <img mat-card-image [src]="arma.imageUrl" alt="Imagem da Arma" class="imagemInfo" />
+        <mat-card-title>{{ arma.nome }}</mat-card-title>
+
+        <mat-card-content>
+            <span><strong>Marca:</strong> {{ arma.marca }}</span>
+            <span><strong>Tipo:</strong> {{ arma.tipoArma.label }}</span>
+            <span><strong>Calibre:</strong> {{ arma.calibre }}</span>
+            <span><strong>Descrição:</strong> {{ arma.descricao }}</span>
+            <span><strong>Preço:</strong> R$ {{ arma.preco}},00</span>
+            <span><strong>Comprimento do Cano:</strong> {{ arma.comprimentoDoCano }} cm</span>
+            <span><strong>Capacidade de Tiro:</strong> {{ arma.capacidadeDeTiro }} tiros</span>
+            <span><strong>RN:</strong> {{ arma.rna }}</span>
+            <span><strong>Modelo:</strong> {{ arma.modelo }}</span>
+            <span><strong>Numero da Arma:</strong> {{ arma.numeroDaArma }}</span>
+            <span><strong>Numero Sigma:</strong> {{ arma.numeroSigma }}</span>
+            <span><strong>Qtd no Estoque:</strong> {{ arma.qtdNoEstoque }}</span>
+        </mat-card-content>
+
+        <mat-card-actions>
+            <button mat-button (click)="adicionarAoCarrinho(arma)">Adicionar ao Carrinho</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

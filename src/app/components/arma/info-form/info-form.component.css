@@ -1,0 +1,106 @@
+.arma-info mat-card {
+    background-color: #2c2f38;
+    color: #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    max-width: 50%; /* Card ocupa 80% da largura da tela */
+    margin: 20% auto; /* 5% de espaçamento em cima e embaixo, centralizado */
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    position: relative;
+    height: auto;
+}
+
+.imagemInfo {
+    border-radius: 12px;
+    height: 300px;
+    width: 40%;
+    max-width: 450px;
+    object-fit: contain;
+}
+
+.arma-info mat-card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    width: 60%;
+}
+
+.arma-info mat-card-content span {
+    color: #e0e0e0;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.arma-info mat-card-content span strong {
+    color: #009eeb;
+    font-weight: 700;
+}
+
+.arma-info mat-card-title {
+    font-size: 1.8rem;
+    color: #f5f5f5;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.arma-info mat-card-actions {
+    display: flex;
+    justify-content: center;
+    padding-top: 15px;
+}
+
+.arma-info button {
+    background-color: #1d6b94;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 4px;
+    border: none;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 60%;
+    max-width: 300px;
+}
+
+.arma-info button:hover {
+    background-color: #15627b;
+    transform: translateY(-2px);
+}
+
+.arma-info button:active {
+    transform: translateY(0);
+}
+
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: 'Arial', sans-serif;
+    padding: 5%;
+}
+
+@media (max-width: 768px) {
+    .arma-info mat-card {
+        max-width: 90%;
+        flex-direction: column;
+    }
+
+    .imagemInfo {
+        height: 180px;
+        width: 100%;
+        max-width: none;
+    }
+
+    .arma-info mat-card-content {
+        width: 100%;
+    }
+
+    .arma-info button {
+        width: 80%;
+    }
+}
