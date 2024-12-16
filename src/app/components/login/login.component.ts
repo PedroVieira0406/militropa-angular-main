@@ -23,6 +23,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  perfil = 2;
 
   hide = signal(true);
     clickEvent(event: MouseEvent) {
@@ -50,7 +51,7 @@ export class LoginComponent implements OnInit {
       const login = this.loginForm.get('login')?.value;
       const senha = this.loginForm.get('senha')?.value;
 
-      this.authService.loginADM(login, senha).subscribe ({
+      this.authService.login(login, senha, this.perfil).subscribe ({
         next: (resp) => {
           // redirecionando para a pagina principal
           this.showSnackbarTopPosition("Login administrativo realizado com sucesso");

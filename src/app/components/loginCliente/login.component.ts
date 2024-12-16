@@ -23,6 +23,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginClienteComponent implements OnInit {
   loginForm!: FormGroup;
+  perfil= 1;
 
   hide = signal(true);
     clickEvent(event: MouseEvent) {
@@ -49,7 +50,7 @@ export class LoginClienteComponent implements OnInit {
       const login = this.loginForm.get('login')?.value;
       const senha = this.loginForm.get('senha')?.value;
 
-      this.authService.loginCli(login, senha).subscribe ({
+      this.authService.login(login, senha, this.perfil).subscribe ({
         next: (resp) => {
           // redirecionando para a pagina principal
           this.showSnackbarTopPosition("Login comum realizado com sucesso");
