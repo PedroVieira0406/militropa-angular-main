@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Cliente } from '../models/cliente.model';
+import { ClienteCadastro } from '../models/clienteCadastro';
+
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +36,11 @@ export class ClienteService {
   }
 
   insert(cliente: Cliente): Observable<Cliente> {
-    return this.httpClient.post<Cliente>(this.cadastroUrl, cliente);
+    return this.httpClient.post<Cliente>(this.baseUrl, cliente);
+  }
+
+  insertClienteCadastro(cliente: ClienteCadastro): Observable<ClienteCadastro> {
+    return this.httpClient.post<ClienteCadastro>(this.cadastroUrl, cliente);
   }
 
   update(cliente: Cliente): Observable<Cliente> {

@@ -1,267 +1,191 @@
 <div class="form-container">
     <mat-card>
         <mat-card-content>
+            <!-- Formulário principal -->
             <form [formGroup]="formGroup" (ngSubmit)="salvar()">
-                <mat-horizontal-stepper [linear]="true" formGroupName="">
-
-                    <!-- Primeira etapa: Informações do Cliente -->
-                    <mat-step [stepControl]="formGroup.get('firstFormGroup')">
-                        <form [formGroup]="formGroup.get('firstFormGroup')">
-                            <ng-template matStepLabel>Dados Pessoais</ng-template>
-
-                            <!-- Campo Nome -->
+                <!-- Stepper com associação correta aos FormGroups -->
+                <mat-horizontal-stepper [linear]="true">
+                    <!-- Etapa 1: Dados Pessoais -->
+                    <mat-step [stepControl]="formGroup.get('firstFormGroup')!">
+                        <ng-template matStepLabel>Dados Pessoais</ng-template>
+                        <div [formGroupName]="'firstFormGroup'">
+                            <!-- Nome -->
                             <mat-form-field appearance="fill" class="full-width-input">
                                 <mat-label>Nome</mat-label>
-                                <input matInput type="text" formControlName="nome">
+                                <input matInput formControlName="nome" />
                                 <mat-error
-                                    *ngIf="formGroup.get('firstFormGroup.nome')?.invalid && formGroup.get('firstFormGroup.nome')?.touched">
-                                    {{getErrorMessage('nome', formGroup.get('firstFormGroup.nome')?.errors)}}
-                                    <span *ngIf="formGroup.get('firstFormGroup.nome')?.hasError('apiError')">
-                                        {{formGroup.get('firstFormGroup.nome')?.getError('apiError')}}
-                                    </span>
+                                    *ngIf="formGroup.get('firstFormGroup')?.get('nome')?.invalid && formGroup.get('firstFormGroup')?.get('nome')?.touched">
+                                    {{ getErrorMessage('nome', formGroup.get('firstFormGroup')?.get('nome')?.errors) }}
                                 </mat-error>
                             </mat-form-field>
 
-                            <!-- Campo CPF -->
+                            <!-- CPF -->
                             <mat-form-field appearance="fill" class="full-width-input">
                                 <mat-label>CPF</mat-label>
-                                <input matInput type="text" formControlName="cpf" (blur)="formatCpf()">
-                                <mat-error
-                                    *ngIf="formGroup.get('firstFormGroup.cpf')?.invalid && formGroup.get('firstFormGroup.cpf')?.touched">
-                                    {{getErrorMessage('cpf', formGroup.get('firstFormGroup.cpf')?.errors)}}
-                                    <span *ngIf="formGroup.get('firstFormGroup.cpf')?.hasError('apiError')">
-                                        {{formGroup.get('firstFormGroup.cpf')?.getError('apiError')}}
-                                    </span>
+                                <input matInput formControlName="cpf" placeholder="000.000.000-00"
+                                    (input)="formatCpf()" />
+                                <mat-error *ngIf="formGroup.get('firstFormGroup')?.get('cpf')?.invalid">
+                                    {{ getErrorMessage('cpf', formGroup.get('firstFormGroup')?.get('cpf')?.errors) }}
                                 </mat-error>
                             </mat-form-field>
 
-                            <!-- Campo E-mail -->
+                            <!-- Email -->
                             <mat-form-field appearance="fill" class="full-width-input">
                                 <mat-label>Email</mat-label>
-                                <input matInput type="email" formControlName="email">
+                                <input matInput formControlName="email" />
                                 <mat-error
-                                    *ngIf="formGroup.get('firstFormGroup.email')?.invalid && formGroup.get('firstFormGroup.email')?.touched">
-                                    {{getErrorMessage('email', formGroup.get('firstFormGroup.email')?.errors)}}
-                                    <span *ngIf="formGroup.get('firstFormGroup.email')?.hasError('apiError')">
-                                        {{formGroup.get('firstFormGroup.email')?.getError('apiError')}}
-                                    </span>
+                                    *ngIf="formGroup.get('firstFormGroup')?.get('email')?.invalid && formGroup.get('firstFormGroup')?.get('email')?.touched">
+                                    {{ getErrorMessage('email', formGroup.get('firstFormGroup')?.get('email')?.errors)
+                                    }}
                                 </mat-error>
                             </mat-form-field>
 
-                            <!-- Campo Registro -->
+                            <!-- Registro -->
                             <mat-form-field appearance="fill" class="full-width-input">
-                                <mat-label>Número Registro Posse Porte</mat-label>
-                                <input matInput type="text" formControlName="registro">
-                                <mat-error
-                                    *ngIf="formGroup.get('firstFormGroup.registro')?.invalid && formGroup.get('firstFormGroup.registro')?.touched">
-                                    {{getErrorMessage('registro', formGroup.get('firstFormGroup.registro')?.errors)}}
-                                    <span *ngIf="formGroup.get('firstFormGroup.registro')?.hasError('apiError')">
-                                        {{formGroup.get('firstFormGroup.registro')?.getError('apiError')}}
-                                    </span>
+                                <mat-label>Registro</mat-label>
+                                <input matInput formControlName="registro" />
+                                <mat-error *ngIf="formGroup.get('firstFormGroup')?.get('registro')?.invalid">
+                                    {{ getErrorMessage('registro',
+                                    formGroup.get('firstFormGroup')?.get('registro')?.errors) }}
                                 </mat-error>
                             </mat-form-field>
 
-                            <!-- Telefones -->
-                            <div formArrayName="telefones">
-                                <div *ngFor="let telefone of telefones.controls; let i = index" class="form-array-item">
-                                    <mat-form-field appearance="fill" class="full-width-input">
-                                        <mat-label>Telefone {{ i + 1 }}</mat-label>
-                                        <input matInput type="text" [formControlName]="i">
-                                        <mat-error *ngIf="telefone.invalid && telefone.touched">
-                                            {{getErrorMessage('telefone', telefone.errors)}}
-                                            <span *ngIf="telefone.hasError('apiError')">
-                                                {{telefone.getError('apiError')}}
-                                            </span>
-                                        </mat-error>
-                                    </mat-form-field>
-                                    <button mat-icon-button color="warn" (click)="removerTelefone(i)">
-                                        <mat-icon>delete</mat-icon>
-                                    </button>
-                                </div>
-                                <button mat-raised-button color="primary" (click)="adicionarTelefone()">Adicionar
-                                    Telefone</button>
-                            </div>
-                        </form>
+                            <!-- Telefone -->
+                            <mat-form-field appearance="fill" class="full-width-input">
+                                <mat-label>Telefone</mat-label>
+                                <input matInput formControlName="telefone" placeholder="(99) 99999-9999"
+                                    (input)="formatTelefone()" />
+                                <mat-error
+                                    *ngIf="formGroup.get('firstFormGroup')?.get('telefone')?.invalid && formGroup.get('firstFormGroup')?.get('telefone')?.touched">
+                                    {{ getErrorMessage('telefone',
+                                    formGroup.get('firstFormGroup')?.get('telefone')?.errors) }}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="step-buttons">
+                            <button mat-button matStepperNext>Próximo</button>
+                        </div>
                     </mat-step>
 
-                    <!-- Segunda etapa: Endereços -->
-                    <mat-step [stepControl]="formGroup.get('secondFormGroup')">
-                        <form [formGroup]="formGroup.get('secondFormGroup')">
-                            <div formArrayName="enderecos" class="enderecos-container">
-                                <div *ngFor="let endereco of enderecosArray.controls; let i = index" [formGroupName]="i"
-                                    class="endereco-group">
-                                    <mat-card class="endereco-card">
-                                        <mat-card-title>Endereço {{ i + 1 }}</mat-card-title>
-                                        <mat-card-content>
-                                            <!-- Campo Nome do Endereço -->
-                                            <mat-form-field appearance="fill" class="full-width-input">
-                                                <mat-label>Nome</mat-label>
-                                                <input matInput type="text" formControlName="nome">
-                                                <mat-error
-                                                    *ngIf="endereco.get('nome')?.invalid && endereco.get('nome')?.touched">
-                                                    {{getErrorMessage('nome', endereco.get('nome')?.errors)}}
-                                                    <span *ngIf="endereco.get('nome')?.hasError('apiError')">
-                                                        {{endereco.get('nome')?.getError('apiError')}}
-                                                    </span>
-                                                </mat-error>
-                                            </mat-form-field>
+                    <!-- Etapa 2: Endereço -->
+                    <mat-step [stepControl]="formGroup.get('secondFormGroup')!">
+                        <ng-template matStepLabel>Endereço</ng-template>
+                        <div [formGroupName]="'secondFormGroup'">
+                            
+                            <!--Cep-->
+                            <mat-form-field appearance="fill" class="full-width-input">
+                                <mat-label>CEP</mat-label>
+                                <input matInput formControlName="enderecoCep" (blur)="preencherEnderecoPeloCep()"/>
+                                <mat-error *ngIf="formGroup.get('enderecoCep')?.get('enderecoCep')?.invalid">
+                                    {{ getErrorMessage('enderecoCep',
+                                    formGroup.get('secondFormGroup')?.get('enderecoCep')?.errors) }}
+                                </mat-error>
+                            </mat-form-field>
 
-                                            <!-- Campo Logradouro do Endereço -->
-                                            <mat-form-field appearance="fill" class="full-width-input">
-                                                <mat-label>Logradouro</mat-label>
-                                                <input matInput type="text" formControlName="logradouro">
-                                                <mat-error
-                                                    *ngIf="endereco.get('logradouro')?.invalid && endereco.get('logradouro')?.touched">
-                                                    {{getErrorMessage('logradouro',
-                                                    endereco.get('logradouro')?.errors)}}
-                                                    <span *ngIf="endereco.get('logradouro')?.hasError('apiError')">
-                                                        {{endereco.get('logradouro')?.getError('apiError')}}
-                                                    </span>
-                                                </mat-error>
-                                            </mat-form-field>
+                            <!-- Nome-->
+                            <mat-form-field appearance="fill" class="full-width-input">
+                                <mat-label>Nome</mat-label>
+                                <input matInput formControlName="enderecoNome" />
+                                <mat-error *ngIf="formGroup.get('secondFormGroup')?.get('enderecoNome')?.invalid">
+                                    {{ getErrorMessage('enderecoNome',
+                                    formGroup.get('secondFormGroup')?.get('enderecoNome')?.errors) }}
+                                </mat-error>
+                            </mat-form-field>
 
-                                            <!-- Campo Número do Endereço -->
-                                            <mat-form-field appearance="fill" class="full-width-input">
-                                                <mat-label>Número</mat-label>
-                                                <input matInput type="text" formControlName="numero">
-                                                <mat-error
-                                                    *ngIf="endereco.get('numero')?.invalid && endereco.get('numero')?.touched">
-                                                    {{getErrorMessage('numero', endereco.get('numero')?.errors)}}
-                                                    <span *ngIf="endereco.get('numero')?.hasError('apiError')">
-                                                        {{endereco.get('numero')?.getError('apiError')}}
-                                                    </span>
-                                                </mat-error>
-                                            </mat-form-field>
+                            <!-- Logradouro-->
+                            <mat-form-field appearance="fill" class="full-width-input">
+                                <mat-label>Logradouro</mat-label>
+                                <input matInput formControlName="enderecoLogradouro" />
+                                <mat-error *ngIf="formGroup.get('secondFormGroup')?.get('enderecoLogradouro')?.invalid">
+                                    {{ getErrorMessage('enderecoLogradouro',
+                                    formGroup.get('secondFormGroup')?.get('enderecoLogradouro')?.errors) }}
+                                </mat-error>
+                            </mat-form-field>
 
-                                            <!-- Campo Bairro do Endereço -->
-                                            <mat-form-field appearance="fill" class="full-width-input">
-                                                <mat-label>Bairro</mat-label>
-                                                <input matInput type="text" formControlName="bairro">
-                                                <mat-error
-                                                    *ngIf="endereco.get('bairro')?.invalid && endereco.get('bairro')?.touched">
-                                                    {{getErrorMessage('bairro', endereco.get('bairro')?.errors)}}
-                                                    <span *ngIf="endereco.get('bairro')?.hasError('apiError')">
-                                                        {{endereco.get('bairro')?.getError('apiError')}}
-                                                    </span>
-                                                </mat-error>
-                                            </mat-form-field>
+                            <!--Bairro-->
+                            <mat-form-field appearance="fill" class="full-width-input">
+                                <mat-label>Bairro</mat-label>
+                                <input matInput formControlName="enderecoBairro" />
+                                <mat-error *ngIf="formGroup.get('enderecoBairro')?.get('enderecoBairro')?.invalid">
+                                    {{ getErrorMessage('enderecoBairro',
+                                    formGroup.get('secondFormGroup')?.get('enderecoBairro')?.errors) }}
+                                </mat-error>
+                            </mat-form-field>
+                            
+                            <!--Numero-->
+                            <mat-form-field appearance="fill" class="full-width-input">
+                                <mat-label>Número</mat-label>
+                                <input matInput formControlName="enderecoNumero" />
+                                <mat-error *ngIf="formGroup.get('enderecoNumero')?.get('enderecoNumero')?.invalid">
+                                    {{ getErrorMessage('enderecoLogradouro',
+                                    formGroup.get('secondFormGroup')?.get('enderecoNumero')?.errors) }}
+                                </mat-error>
+                            </mat-form-field>
 
-                                            <!-- Campo Cidade do Endereço -->
-                                            <mat-form-field appearance="fill" class="full-width-input">
-                                                <mat-label>Cidade</mat-label>
-                                                <input matInput type="text" formControlName="cidade">
-                                                <mat-error
-                                                    *ngIf="endereco.get('cidade')?.invalid && endereco.get('cidade')?.touched">
-                                                    {{getErrorMessage('cidade', endereco.get('cidade')?.errors)}}
-                                                    <span *ngIf="endereco.get('cidade')?.hasError('apiError')">
-                                                        {{endereco.get('cidade')?.getError('apiError')}}
-                                                    </span>
-                                                </mat-error>
-                                            </mat-form-field>
+                            <!-- Complemento-->
+                            <mat-form-field appearance="fill" class="full-width-input">
+                                <mat-label>Complemento</mat-label>
+                                <input matInput formControlName="enderecoComplemento" />
+                                <mat-error *ngIf="formGroup.get('secondFormGroup')?.get('enderecoComplemento')?.invalid">
+                                    {{ getErrorMessage('enderecoComplemento',
+                                    formGroup.get('secondFormGroup')?.get('enderecoComplemento')?.errors) }}
+                                </mat-error>
+                            </mat-form-field>
 
-                                            <!-- Campo Estado do Endereço -->
-                                            <mat-form-field appearance="fill" class="full-width-input">
-                                                <mat-label>Estado</mat-label>
-                                                <input matInput type="text" formControlName="estado">
-                                                <mat-error
-                                                    *ngIf="endereco.get('estado')?.invalid && endereco.get('estado')?.touched">
-                                                    {{getErrorMessage('estado', endereco.get('estado')?.errors)}}
-                                                    <span *ngIf="endereco.get('estado')?.hasError('apiError')">
-                                                        {{endereco.get('estado')?.getError('apiError')}}
-                                                    </span>
-                                                </mat-error>
-                                            </mat-form-field>
+                            <!--Cidade-->
+                            <mat-form-field appearance="fill" class="full-width-input">
+                                <mat-label>Cidade</mat-label>
+                                <input matInput formControlName="enderecoCidade" />
+                                <mat-error *ngIf="formGroup.get('enderecoCidade')?.get('enderecoCidade')?.invalid">
+                                    {{ getErrorMessage('enderecoCidade',
+                                    formGroup.get('secondFormGroup')?.get('enderecoCidade')?.errors) }}
+                                </mat-error>
+                            </mat-form-field>
 
-                                            <!-- Campo CEP do Endereço -->
-                                            <mat-form-field appearance="fill" class="full-width-input">
-                                                <mat-label>CEP</mat-label>
-                                                <input matInput type="text" formControlName="cep">
-                                                <mat-error
-                                                    *ngIf="endereco.get('cep')?.invalid && endereco.get('cep')?.touched">
-                                                    {{getErrorMessage('cep', endereco.get('cep')?.errors)}}
-                                                    <span *ngIf="endereco.get('cep')?.hasError('apiError')">
-                                                        {{endereco.get('cep')?.getError('apiError')}}
-                                                    </span>
-                                                </mat-error>
-                                            </mat-form-field>
+                            <!--Estado-->
+                            <mat-form-field appearance="fill" class="full-width-input">
+                                <mat-label>Estado</mat-label>
+                                <input matInput formControlName="enderecoEstado" />
+                                <mat-error *ngIf="formGroup.get('enderecoEstado')?.get('enderecoEstado')?.invalid">
+                                    {{ getErrorMessage('enderecoEstado',
+                                    formGroup.get('secondFormGroup')?.get('enderecoEstado')?.errors) }}
+                                </mat-error>
+                            </mat-form-field>
 
-                                            <!-- Campo Complemento do Endereço -->
-                                            <mat-form-field appearance="fill" class="full-width-input">
-                                                <mat-label>Complemento</mat-label>
-                                                <input matInput type="text" formControlName="complemento">
-                                                <mat-error
-                                                    *ngIf="endereco.get('complemento')?.invalid && endereco.get('complemento')?.touched">
-                                                    {{getErrorMessage('complemento',
-                                                    endereco.get('complemento')?.errors)}}
-                                                    <span *ngIf="endereco.get('complemento')?.hasError('apiError')">
-                                                        {{endereco.get('complemento')?.getError('apiError')}}
-                                                    </span>
-                                                </mat-error>
-                                            </mat-form-field>
-
-                                        </mat-card-content>
-                                        <button mat-icon-button color="warn" (click)="removerEndereco(i)">
-                                            <mat-icon>delete</mat-icon>
-                                        </button>
-                                    </mat-card>
-                                </div>
-                                <button mat-raised-button color="primary" (click)="adicionarEndereco()">Adicionar
-                                    Endereço</button>
-                            </div>
-                        </form>
+                        </div>
+                        <div class="step-buttons">
+                            <button mat-button matStepperPrevious>Voltar</button>
+                            <button mat-button matStepperNext>Próximo</button>
+                        </div>
                     </mat-step>
 
-                    <!-- Terceira etapa: Login -->
-                    <mat-step [stepControl]="formGroup.get('thirdFormGroup')">
-                        <form [formGroup]="formGroup.get('thirdFormGroup')">
-                            <!-- Campo Login -->
+                    <!-- Etapa 3: Login -->
+                    <mat-step [stepControl]="formGroup.get('thirdFormGroup')!">
+                        <ng-template matStepLabel>Login</ng-template>
+                        <div [formGroupName]="'thirdFormGroup'">
                             <mat-form-field appearance="fill" class="full-width-input">
                                 <mat-label>Login</mat-label>
-                                <input matInput type="text" formControlName="login">
-                                <mat-error
-                                    *ngIf="formGroup.get('thirdFormGroup.login')?.invalid && formGroup.get('thirdFormGroup.login')?.touched">
-                                    {{getErrorMessage('login', formGroup.get('thirdFormGroup.login')?.errors)}}
-                                    <span *ngIf="formGroup.get('thirdFormGroup.login')?.hasError('apiError')">
-                                        {{formGroup.get('thirdFormGroup.login')?.getError('apiError')}}
-                                    </span>
+                                <input matInput formControlName="login" />
+                                <mat-error *ngIf="formGroup.get('thirdFormGroup')?.get('login')?.invalid">
+                                    {{ getErrorMessage('login', formGroup.get('thirdFormGroup')?.get('login')?.errors)
+                                    }}
                                 </mat-error>
                             </mat-form-field>
 
-                            <!-- Campo Senha -->
                             <mat-form-field appearance="fill" class="full-width-input">
                                 <mat-label>Senha</mat-label>
-                                <input matInput type="password" formControlName="senha">
-                                <mat-error
-                                    *ngIf="formGroup.get('thirdFormGroup.senha')?.invalid && formGroup.get('thirdFormGroup.senha')?.touched">
-                                    {{getErrorMessage('senha', formGroup.get('thirdFormGroup.senha')?.errors)}}
-                                    <span *ngIf="formGroup.get('thirdFormGroup.senha')?.hasError('apiError')">
-                                        {{formGroup.get('thirdFormGroup.senha')?.getError('apiError')}}
-                                    </span>
+                                <input matInput formControlName="senha" type="password" />
+                                <mat-error *ngIf="formGroup.get('thirdFormGroup')?.get('senha')?.invalid">
+                                    {{ getErrorMessage('senha', formGroup.get('thirdFormGroup')?.get('senha')?.errors)
+                                    }}
                                 </mat-error>
                             </mat-form-field>
-
-                            <!-- Campo Confirmar Senha -->
-                            <mat-form-field appearance="fill" class="full-width-input">
-                                <mat-label>Confirmar Senha</mat-label>
-                                <input matInput type="password" formControlName="confirmarSenha">
-                                <mat-error
-                                    *ngIf="formGroup.get('thirdFormGroup.confirmarSenha')?.invalid && formGroup.get('thirdFormGroup.confirmarSenha')?.touched">
-                                    {{getErrorMessage('confirmarSenha',
-                                    formGroup.get('thirdFormGroup.confirmarSenha')?.errors)}}
-                                    <span *ngIf="formGroup.get('thirdFormGroup.confirmarSenha')?.hasError('apiError')">
-                                        {{formGroup.get('thirdFormGroup.confirmarSenha')?.getError('apiError')}}
-                                    </span>
-                                </mat-error>
-                            </mat-form-field>
-
-                            <!-- Botões de navegação -->
-                            <div>
-                                <button mat-raised-button color="primary" matStepperPrevious>Voltar</button>
-                                <button mat-raised-button color="primary" matStepperNext>Finalizar</button>
-                            </div>
-                        </form>
+                        </div>
+                        <div class="step-buttons">
+                            <button mat-button matStepperPrevious>Voltar</button>
+                            <button mat-button type="submit">Salvar</button>
+                        </div>
                     </mat-step>
-
                 </mat-horizontal-stepper>
             </form>
         </mat-card-content>

@@ -8,6 +8,7 @@ import { ArmaListComponent } from './components/arma/arma-list/arma-list.compone
 import { InfoFormComponent } from './components/arma/info-form/info-form.component';
 import { armaResolver } from './components/arma/resolver/arma.resolver';
 import { CarrinhoComponent } from './components/carrinho/carrinho.component';
+import { ClienteCadastroFormComponent } from './components/cliente/cliente-cadastro/cliente-form.component';
 import { ClienteFormComponent } from './components/cliente/cliente-form/cliente-form.component';
 import { ClienteListComponent } from './components/cliente/cliente-list/cliente-list.component';
 import { clienteResolver } from './components/cliente/resolver/cliente.resolver';
@@ -41,6 +42,8 @@ export const routes: Routes = [
             { path: 'carrinho', component: CarrinhoComponent, title: 'Carrinho de Compras' },
             { path: 'login', component: LoginClienteComponent, title: 'Login'},
             { path: 'info/:id', component: InfoFormComponent, title: 'Info'},
+
+            { path: 'cadastro', component: ClienteCadastroFormComponent, title: 'Cadastro'}
         ]
     },
     {

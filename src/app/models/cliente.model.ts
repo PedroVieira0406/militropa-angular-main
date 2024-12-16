@@ -8,6 +8,5 @@ export class Cliente {
     email!: string;
     registro!: string;
     usuario!: Usuario;
-    telefones?: string[]; // Telefones como array de strings
-    enderecos?: Endereco[]; // Endereços como array de objetos do tipo Endereco
+    endereco?: Endereco;
 }
