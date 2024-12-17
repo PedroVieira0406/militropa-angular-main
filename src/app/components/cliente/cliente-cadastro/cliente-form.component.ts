@@ -13,9 +13,9 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Cliente } from '../../../models/cliente.model';
+import { ClienteCadastro } from '../../../models/clienteCadastro';
 import { CepService } from '../../../services/cep.service';
 import { ClienteService } from '../../../services/cliente.service';
-import { ClienteCadastro } from '../../../models/clienteCadastro';
 
 @Component({
   selector: 'app-cliente-form',

@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -22,8 +22,8 @@ export class AuthService {
         private jwtHelper: JwtHelperService
     ) { }
 
-    login(username: string, senha: string, perfil: number): Observable<any> {
-        const payload = { username, senha, perfil };
+    login(login: string, senha: string, perfil: number): Observable<any> {
+        const payload = { login, senha, perfil };
         return this.http.post(this.apiUrl, payload, { observe: 'response' }).pipe(
             map((response) => {
                 const token = response.headers.get('Authorization');
@@ -37,6 +37,7 @@ export class AuthService {
                     const tipo = perfil === 1 ? 'User' : 'Admin';
                     this.setUsuarioTipo(tipo);
                 }
+                console.log(usuario)
                 return usuario;
             })
         );

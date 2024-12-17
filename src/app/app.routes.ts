@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { AcabamentoFormComponent } from './components/acabamento/acabamento-form/acabamento-form.component';
 import { AcabamentoListComponent } from './components/acabamento/acabamento-list/acabamento-list.component';
 import { acabamentoResolver } from './components/acabamento/resolver/acabamento.resolver';
+import { AlterarLoginComponent } from './components/alterar-login/alterar-login/alterar-login.component';
+import { AlterarSenhaComponent } from './components/alterar-senha/alterar-senha/alterar-senha.component';
 import { ArmaCardListComponent } from './components/arma/arma-card-list/arma-card-list.component';
 import { ArmaFormComponent } from './components/arma/arma-form/arma-form.component';
 import { ArmaListComponent } from './components/arma/arma-list/arma-list.component';
@@ -29,6 +31,7 @@ import { usuarioResolver } from './components/usuario/resolver/usuario.resolver'
 import { UsuarioFormComponent } from './components/usuario/usuario-form/usuario-form.component';
 import { UsuarioListComponent } from './components/usuario/usuario-list/usuario-list.component';
 import { authGuard } from './guard/auth.guard';
+import { authClienteGuard } from './guard/authCliente.guard';
 
 export const routes: Routes = [
     {
@@ -39,11 +42,16 @@ export const routes: Routes = [
             { path: '', pathMatch: 'full', redirectTo: 'ecommerce' },
             
             { path: 'ecommerce', component: ArmaCardListComponent, title: 'Lista de Cards de Armas' },
-            { path: 'carrinho', component: CarrinhoComponent, title: 'Carrinho de Compras' },
-            { path: 'login', component: LoginClienteComponent, title: 'Login'},
             { path: 'info/:id', component: InfoFormComponent, title: 'Info'},
 
-            { path: 'cadastro', component: ClienteCadastroFormComponent, title: 'Cadastro'}
+            { path: 'login', component: LoginClienteComponent, title: 'Login'},
+            { path: 'cadastro', component: ClienteCadastroFormComponent, title: 'Cadastro'},
+
+            { path: 'carrinho', component: CarrinhoComponent, title: 'Carrinho de Compras' , canActivate: [authClienteGuard] },
+
+            { path: 'alterarLogin', component: AlterarLoginComponent, title: 'Alterando Login', canActivate: [authClienteGuard]},
+            
+            { path: 'alterarSenha', component: AlterarSenhaComponent, title: 'Alterando Senha', canActivate: [authClienteGuard]},
         ]
     },
     {

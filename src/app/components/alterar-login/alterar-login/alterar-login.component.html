@@ -1,0 +1,31 @@
+<mat-card class="tudo">
+    <mat-card-content>
+        <form [formGroup]="formGroup" class="formulario" novalidate>
+            <!-- Login Atual -->
+            <mat-form-field appearance="outline" style="width: 100%" class="campos">
+                <mat-label>Login Atual:</mat-label>
+                <input matInput placeholder="Seu login atual" [value]="usuarioLogado?.login" disabled>
+            </mat-form-field>
+
+            <!-- Novo Login -->
+            <mat-form-field appearance="outline" style="width: 100%" class="campos">
+                <mat-label>Novo Login:</mat-label>
+                <input matInput placeholder="Digite o novo login" formControlName="login">
+                <mat-error *ngIf="formGroup.get('login')?.hasError('required')">
+                    O novo login é obrigatório.
+                </mat-error>
+                <mat-error *ngIf="formGroup.get('login')?.hasError('minlength')">
+                    O login deve ter pelo menos 3 caracteres.
+                </mat-error>
+            </mat-form-field>
+        </form>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-flat-button mat-button color="primary" class="botao" (click)="alterarLogin()">
+            Alterar Login
+        </button>
+        <button mat-flat-button mat-button color="accent" class="botao" [routerLink]="'/alterarSenha'">
+            Alterar Senha
+        </button>
+    </mat-card-actions>
+</mat-card>

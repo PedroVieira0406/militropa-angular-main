@@ -47,11 +47,14 @@ export class InfoFormComponent implements OnInit {
 
   adicionarAoCarrinho(card: Arma) {
     this.showSnackbarTopPosition('Produto adicionado ao carrinho');
-    this.carrinhoService.adicionar({
-      id: card.id,
+    this.carrinhoService.adicionarAoCarrinho({
+      quantidade: 1,
+      idArma: card.id,
       nome: card.nome,
+      subTotal: card.preco,
       preco: card.preco,
-      quantidade: 1
+      imageUrl: card.nomeImagem
+
     });
   }
 

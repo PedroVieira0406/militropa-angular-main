@@ -65,4 +65,12 @@ export class UsuarioService {
     return this.httpClient.get<Usuario[]>(`${this.baseUrl}/search/login/${nome}`, { params });
   }
 
+  alterarSenha(senhaAntiga: string, senhaNova: string): Observable<void> {
+    return this.httpClient.put<void>(`/usuariologado/alterar-senha`, {senhaAntiga, senhaNova});
+  }
+
+  alterarLogin(login: string): Observable<void> {
+    return this.httpClient.put<void>(`/usuariologado/alterar-login`, login);
+  }
+
 }

@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -23,19 +23,20 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginClienteComponent implements OnInit {
   loginForm!: FormGroup;
-  perfil= 1;
+  perfil = 1;
 
   hide = signal(true);
-    clickEvent(event: MouseEvent) {
-      this.hide.set(!this.hide());
-      event.stopPropagation();
-    }
+  clickEvent(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
+  }
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private location: Location,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -45,19 +46,26 @@ export class LoginClienteComponent implements OnInit {
     });
   }
 
+  cadastro(){
+    this.router.navigateByUrl('cadastro');
+  }
+
   onSubmit() {
     if (this.loginForm.valid) {
       const login = this.loginForm.get('login')?.value;
       const senha = this.loginForm.get('senha')?.value;
 
-      this.authService.login(login, senha, this.perfil).subscribe ({
+
+      this.authService.login(login, senha, this.perfil).subscribe({
+        
         next: (resp) => {
           // redirecionando para a pagina principal
           this.showSnackbarTopPosition("Login comum realizado com sucesso");
           this.location.back();  // Volta para a página anterior
-          
+
         },
         error: (err) => {
+          console.log("Tentativa de enviar esses dados: ",login, senha, this.perfil);
           console.log(err);
           this.showSnackbarTopPosition("Login ou senha inválido");
         }
@@ -68,6 +76,10 @@ export class LoginClienteComponent implements OnInit {
 
   onRegister() {
     // criar usuário
+  }
+
+  cancelar() {
+    this.router.navigateByUrl('/login');
   }
 
   showSnackbarTopPosition(content: any) {

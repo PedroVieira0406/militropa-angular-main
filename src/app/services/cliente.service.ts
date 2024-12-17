@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Cliente } from '../models/cliente.model';
 import { ClienteCadastro } from '../models/clienteCadastro';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -12,7 +13,19 @@ export class ClienteService {
   private baseUrl = 'http://localhost:8080/clientes';
   private cadastroUrl= 'http://localhost:8080/cadastro';
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+    private router: Router,
+  ) {
+    
+  }
+  private getHeaders(): HttpHeaders {
+    
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.router.navigate(['/login']);
+      throw new Error('Usuário não autenticado');
+    }
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
   findAll(page?: number, pageSize?: number): Observable<Cliente[]> {
@@ -32,6 +45,7 @@ export class ClienteService {
   }
 
   findById(id: string): Observable<Cliente> {
+    const headers = this.getHeaders();
     return this.httpClient.get<Cliente>(`${this.baseUrl}/${id}`);
   }
 
