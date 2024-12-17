@@ -1,79 +1,92 @@
-/* Definir altura e margem zero para a página */
-html,
-body {
-    height: 100%;
-    margin: 0;
+/* Centraliza o conteúdo na tela */
+.form-container {
     display: flex;
-    justify-content: center;
-    /* Alinha horizontalmente */
-    align-items: center;
-    /* Alinha verticalmente */
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-    /* Cor de fundo suave */
-}
-
-/* Estiliza o card */
-mat-card {
-    width: 100%;
-    max-width: 400px;
-    /* Largura máxima do card */
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    background-color: white;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    min-height: 100vh; /* Altura mínima para ocupar toda a tela */
+    background: linear-gradient(90deg, #121212 0%, #1F1F1F 100%); /* Gradiente escuro */
+    margin: 0; /* Remove qualquer margem padrão */
     box-sizing: border-box;
 }
 
-/* Estiliza o conteúdo do formulário */
+/* Estilização do card */
+.tudo {
+    width: 100%;
+    max-width: 400px; /* Largura máxima */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7);
+    background-color: #2B2B2B; /* Fundo escuro do card */
+    box-sizing: border-box;
+    color: #E0E0E0; /* Texto claro */
+}
+
+
+/* Conteúdo do card */
+mat-card-content {
+    padding: 20px;
+}
+
+/* Estilização do formulário */
 form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px; /* Espaçamento entre os campos */
 }
 
-/* Ajuste nos campos de entrada */
+/* Campos do formulário */
 mat-form-field {
     width: 100%;
+    margin-bottom: 16px;
+    color: #E0E0E0; /* Texto claro */
 }
 
 mat-label {
     font-size: 14px;
-    color: #333;
+    font-weight: bold;
+    color: #E0E0E0; /* Cor do texto do label */
 }
 
 input {
     font-size: 14px;
     padding: 10px;
     border-radius: 4px;
-    border: 1px solid #ccc;
+    border: 1px solid #444444; /* Bordas suaves */
+    background-color: #1C1C1C; /* Fundo escuro para o input */
+    color: #E0E0E0; /* Texto claro */
+}
+
+input::placeholder {
+    color: #757575; /* Cor do placeholder */
 }
 
 /* Estilo dos erros */
 mat-error {
     font-size: 12px;
-    color: #d32f2f;
+    color: #FF5252; /* Vermelho claro para erro */
 }
 
-/* Estilo dos botões */
+/* Ações do card */
 mat-card-actions {
     display: flex;
-    justify-content: center;
-    /* Centraliza o botão */
+    justify-content: space-between;
     margin-top: 20px;
 }
 
+/* Botões */
 button.botao {
-    background-color: #007BFF;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 4px;
-    text-transform: uppercase;
-    font-size: 14px;
     min-width: 120px;
+    padding: 10px 20px;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    background: #4FC3F7; /* Azul claro */
+    color: #121212; /* Texto escuro no botão */
+    transition: background 0.3s ease;
+    box-shadow: 0px 4px 8px rgba(79, 195, 247, 0.4); /* Sombra do botão */
+    font-weight: bold;
 }
 
 button.botao:hover {
-    background-color: #0056b3;
-    transition: background-color 0.3s;
+    background: #81D4FA; /* Azul mais claro no hover */
 }

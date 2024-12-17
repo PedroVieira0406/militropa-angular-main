@@ -32,6 +32,8 @@ import { UsuarioFormComponent } from './components/usuario/usuario-form/usuario-
 import { UsuarioListComponent } from './components/usuario/usuario-list/usuario-list.component';
 import { authGuard } from './guard/auth.guard';
 import { authClienteGuard } from './guard/authCliente.guard';
+import { RealizarPagamentoComponent } from './components/realizar-pagamento/realizar-pagamento.component';
+import { AcompanharPedidoComponent } from './components/acompanhar-pedido/acompanhar-pedido.component';
 
 export const routes: Routes = [
     {
@@ -48,6 +50,8 @@ export const routes: Routes = [
             { path: 'cadastro', component: ClienteCadastroFormComponent, title: 'Cadastro'},
 
             { path: 'carrinho', component: CarrinhoComponent, title: 'Carrinho de Compras' , canActivate: [authClienteGuard] },
+            { path: 'realizarPagamento', component: RealizarPagamentoComponent, title: 'Realizar Pagamento', canActivate: [authClienteGuard]},
+            { path: 'acompanharpedido', component: AcompanharPedidoComponent, title: 'Acompanhar Pedido', canActivate: [authClienteGuard]},
 
             { path: 'alterarLogin', component: AlterarLoginComponent, title: 'Alterando Login', canActivate: [authClienteGuard]},
             

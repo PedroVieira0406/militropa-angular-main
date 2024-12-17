@@ -66,7 +66,7 @@ export class AlterarLoginComponent implements OnInit {
           this.snackBar.open('Login alterado com sucesso!', 'Fechar', {
             duration: 3000,
           });
-          this.router.navigateByUrl('/inicio');
+          this.router.navigateByUrl('/ecommerce');
         },
         error: (error: HttpErrorResponse) => {
           console.error('Erro ao alterar login:', error);

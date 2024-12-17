@@ -52,9 +52,9 @@ export class ArmaCardListComponent implements OnInit {
   filtro: string = '';
 
   constructor(private armaService: ArmaService,
-                      private carrinhoService: CarrinhoService,
-                      private snackBar: MatSnackBar,
-                      private router:Router) {
+    private carrinhoService: CarrinhoService,
+    private snackBar: MatSnackBar,
+    private router: Router) {
 
   }
   ngOnInit(): void {
@@ -64,7 +64,7 @@ export class ArmaCardListComponent implements OnInit {
 
   carregarArmas() {
     // buscando as armas
-    this.armaService.findAll(0,10).subscribe (data => {
+    this.armaService.findAll(0, 10).subscribe(data => {
       this.armas = data;
       this.carregarCards();
     })
@@ -86,31 +86,33 @@ export class ArmaCardListComponent implements OnInit {
 
   adicionarAoCarrinho(card: Card) {
     this.showSnackbarTopPosition('Produto adicionado ao carrinho');
-    this.carrinhoService.adicionar({
-      id: card.idArma,
+    this.carrinhoService.adicionarAoCarrinho({
+      idArma: card.idArma,
       nome: card.titulo,
       preco: card.preco,
-      quantidade: 1
+      quantidade: 1,
+      subTotal: card.preco,
+      imageUrl: card.imageUrl
     });
   }
 
-  carrinhoDeCompras(){
+  carrinhoDeCompras() {
     this.router.navigateByUrl('/carrinho');
   }
 
-  login(){
+  login() {
     this.router.navigateByUrl('/login');
   }
 
   buscarArmas(): void {
-    if(this.filtro){
-      this.armaService.findByNome(this.filtro, this.page, this.pageSize).subscribe(data => { 
+    if (this.filtro) {
+      this.armaService.findByNome(this.filtro, this.page, this.pageSize).subscribe(data => {
         this.armas = data;
         this.carregarCards();
       },);
     }
     else {
-      this.armaService.findAll(this.page, this.pageSize).subscribe(data => { 
+      this.armaService.findAll(this.page, this.pageSize).subscribe(data => {
         this.armas = data;
         this.carregarCards();
       },);
@@ -118,13 +120,13 @@ export class ArmaCardListComponent implements OnInit {
   }
 
   buscarTodos(): void {
-    const count$ = this.filtro 
-      ? this.armaService.countBynome(this.filtro) 
+    const count$ = this.filtro
+      ? this.armaService.countBynome(this.filtro)
       : this.armaService.count();
 
     count$.subscribe(
-      data => { 
-        this.totalRecords = data; 
+      data => {
+        this.totalRecords = data;
       },
       error => console.error('Erro ao contar usuários', error)
     );

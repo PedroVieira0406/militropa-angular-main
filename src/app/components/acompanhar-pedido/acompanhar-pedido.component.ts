@@ -26,9 +26,9 @@ export class AcompanharPedidoComponent implements OnInit {
       } else {
         clearInterval(this.interval);
         this.snackBar.open('Seu pedido chegou!', 'Fechar' , {duration: 3000});
-        this.router.navigateByUrl('/inicio'); // Redireciona para a página inicial
+        this.router.navigateByUrl('/ecommerce'); // Redireciona para a página inicial
       }
-    }, 1000); // Atualiza a cada 1 segundo
+    }, 1200); // Atualiza a cada 1 segundo
   }
 
   ngOnDestroy(): void {

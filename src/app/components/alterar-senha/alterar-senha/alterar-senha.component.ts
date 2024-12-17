@@ -56,7 +56,7 @@ export class AlterarSenhaComponent {
         this.usuarioService.alterarSenha(senhaAntigaStr, senhaNovaStr).subscribe({
           next: () => {
             this.snackBar.open('Senha alterada com sucesso!', 'Fechar', { duration: 3000 });
-            this.router.navigateByUrl('/inicio');
+            this.router.navigateByUrl('/ecommerce');
           },
           error: (error: HttpErrorResponse) => {
             console.error('Erro ao alterar senha:', error);

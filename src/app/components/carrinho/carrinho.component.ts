@@ -1,19 +1,13 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCard, MatCardActions, MatCardContent, MatCardFooter, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Router, RouterModule } from '@angular/router';
-import { ItemCarrinho } from '../../models/item-carrinho';
+import { ItemPedido } from '../../models/itemPedido.model';
 import { CarrinhoService } from '../../services/carrinho.service';
 import { ClienteService } from '../../services/cliente.service';
-import { AuthService } from '../../services/auth.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { PedidoService } from '../../services/pedido.service';
-import { Pedido } from '../../models/pedido.model';
-import { ItemPedido } from '../../models/itemPedido.model';
-import { MatIcon } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
-import { MatCard, MatCardActions, MatCardContent, MatCardFooter, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-carrinho',
@@ -80,7 +74,6 @@ export class CarrinhoComponent implements OnInit {
         });
     }
   }
-
 
   removerItem(index: number): void {
     this.itensCarrinho.splice(index, 1);
